@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "product.proto";
+
+option go_package = "github.com/Arthur199212/microservices-demo/src/products/pb";
+
+message ListProductsRequest {
+  int32 page = 1;
+  int32 pageSize = 2;
+}
+
+message ListProductsResponse {
+  repeated Product products = 1;
+}

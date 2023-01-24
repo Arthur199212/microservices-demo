@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+
+import "rpc_list_products.proto";
+
+option go_package = "github.com/Arthur199212/microservices-demo/src/products/pb";
+
+service Products {
+  rpc ListProducts (ListProductsRequest) returns (ListProductsResponse) {}
+}
