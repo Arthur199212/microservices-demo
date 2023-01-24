@@ -1,15 +1,10 @@
-# -include .env
-# export
-
 .PHONY: run
 run:
 	go run main.go
 
-# up:
-# 	docker compose up -d
-
-# down:
-# 	docker compose down
+.PHONY: lint
+lint:
+	gofmt -l -w .
 
 .PHONY: proto
 proto:
@@ -19,6 +14,7 @@ proto:
 		--grpc-gateway_out=pb --grpc-gateway_opt=paths=source_relative \
     proto/*.proto
 
+.PHONY: evans
 evans:
 	evans --host localhost --port 5000 -r repl
 

@@ -48,14 +48,7 @@ func convertProductsList(products []db.Product) []*pb.Product {
 	pl := make([]*pb.Product, len(products))
 
 	for i, product := range products {
-		pl[i] = &pb.Product{
-			Id:          product.ID,
-			Name:        product.Name,
-			Description: product.Description,
-			Picture:     product.Picture,
-			Price:       product.Price,
-			Currency:    product.Currency,
-		}
+		pl[i] = convertProduct(product)
 	}
 
 	return pl
