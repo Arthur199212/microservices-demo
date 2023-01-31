@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "product.proto";
+
+option go_package = "github.com/Arthur199212/microservices-demo/src/carg/pb";
+
+message GetCartRequest {
+  string sessionId = 1;
+}
+
+message GetCartResponse {
+	string sessionId = 1;
+  repeated Product products = 2;
+}
