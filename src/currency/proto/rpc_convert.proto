@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package pb;
+
+import "money.proto";
+
+option go_package = "github.com/Arthur199212/microservices-demo/src/currencies/pb";
+
+message ConvertRequest {
+  Money from = 1;
+  string toCurrencyCode = 2;
+}
