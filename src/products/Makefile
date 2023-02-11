@@ -16,3 +16,7 @@ proto:
 .PHONY: evans
 evans:
 	evans --host localhost --port 5000 -r repl
+
+.PHONY: test
+test:
+	go test -v ./... -race -cover

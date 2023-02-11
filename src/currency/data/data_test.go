@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"net/http"
 	"net/http/httptest"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -22,7 +23,7 @@ func TestGetSupportedCurrencies(t *testing.T) {
 }
 
 func TestMonitorRates(t *testing.T) {
-	callsNum := 0
+	var callsNum int32
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cubes := Cubes{
 			CubeData: []Cube{
@@ -39,7 +40,7 @@ func TestMonitorRates(t *testing.T) {
 		data, err := xml.Marshal(cubes)
 		assert.NoError(t, err)
 
-		callsNum++
+		atomic.AddInt32(&callsNum, 1)
 
 		w.Header().Add("Content-Type", "application/xml; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
@@ -55,7 +56,7 @@ func TestMonitorRates(t *testing.T) {
 	expectedCallsNum := 4
 	time.Sleep(time.Duration(expectedCallsNum) * time.Second)
 
-	assert.Equal(t, expectedCallsNum, callsNum)
+	assert.Equal(t, int32(expectedCallsNum), atomic.LoadInt32(&callsNum))
 }
 
 func TestVerifySupportedCurrency(t *testing.T) {

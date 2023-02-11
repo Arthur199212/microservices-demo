@@ -28,6 +28,7 @@ type currencyData struct {
 
 func NewCurrencyData() (CurrencyData, error) {
 	cd := &currencyData{
+		mu:                     sync.RWMutex{},
 		rates:                  make(map[string]float32),
 		supportedCurrencyCodes: []string{},
 	}
