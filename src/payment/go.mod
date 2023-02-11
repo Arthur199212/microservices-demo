@@ -1,6 +1,6 @@
 module github.com/Arthur199212/microservices-demo/src/payment
 
-go 1.19
+go 1.20
 
 require (
 	github.com/durango/go-credit-card v0.0.0-20220404131259-a9e175ba4082

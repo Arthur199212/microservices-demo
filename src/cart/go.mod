@@ -1,6 +1,6 @@
 module github.com/Arthur199212/microservices-demo/src/cart
 
-go 1.19
+go 1.20
 
 require (
 	github.com/rs/zerolog v1.28.0

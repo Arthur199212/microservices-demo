@@ -27,7 +27,7 @@ func (s *Server) ClearCart(
 			return emptyResp,
 				status.Errorf(codes.NotFound, "cart with sessionId=%s not found", sessionId)
 		}
-		return emptyResp, status.Errorf(codes.Internal, "cannot clear cart:", err)
+		return emptyResp, status.Errorf(codes.Internal, "cannot clear cart: %v", err)
 	}
 
 	return emptyResp, nil

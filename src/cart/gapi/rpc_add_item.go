@@ -32,7 +32,7 @@ func (s *Server) AddItem(
 
 	err := s.cartDB.AddItem(sessionId, productId, quantity)
 	if err != nil {
-		status.Errorf(codes.Internal, "cannot add item to cart:", err)
+		status.Errorf(codes.Internal, "cannot add item to cart: %v", err)
 	}
 
 	return emptyResp, nil

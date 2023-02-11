@@ -25,7 +25,7 @@ func (s *Server) GetCart(
 			return &pb.GetCartResponse{},
 				status.Errorf(codes.NotFound, "cart with sessionId=%s not found", sessionId)
 		}
-		return &pb.GetCartResponse{}, status.Errorf(codes.Internal, "cannot clear cart:", err)
+		return &pb.GetCartResponse{}, status.Errorf(codes.Internal, "cannot clear cart: %v", err)
 	}
 
 	return &pb.GetCartResponse{
