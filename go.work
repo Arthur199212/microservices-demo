@@ -1,0 +1,10 @@
+go 1.20
+
+use(
+  ./src/cart
+  ./src/checkout
+  ./src/currency
+  ./src/payment
+  ./src/products
+  ./src/shipping
+)

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+import "address.proto";
+import "card_info.proto";
+import "order.proto";
+
+option go_package = "github.com/Arthur199212/microservices-demo/src/pb";
+
+service Checkout {
+  rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderResponse) {}
+}
+
+message PlaceOrderRequest {
+  string sessionId = 1;
+  string userCurrency = 2;
+  Address address = 3;
+  string email = 4;
+  CardInfo cardInfo = 5;
+}
+
+message PlaceOrderResponse {
+  Order order = 1;
+}

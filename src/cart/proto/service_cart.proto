@@ -11,8 +11,6 @@ option go_package = "github.com/Arthur199212/microservices-demo/src/carg/pb";
 
 service Cart {
   rpc AddItem (AddItemRequest) returns (google.protobuf.Empty) {}
-
   rpc ClearCart (ClearCartRequest) returns (google.protobuf.Empty) {}
-
   rpc GetCart (GetCartRequest) returns (GetCartResponse) {}
 }
