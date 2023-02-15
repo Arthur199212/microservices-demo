@@ -1,4 +1,4 @@
-module github.com/Arthur199212/microservices-demo/src/currencies
+module github.com/Arthur199212/microservices-demo/src/currency
 
 go 1.20
 

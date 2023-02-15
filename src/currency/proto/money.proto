@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pb;
 
-option go_package = "github.com/Arthur199212/microservices-demo/src/currencies/pb";
+option go_package = "github.com/Arthur199212/microservices-demo/src/currency/pb";
 
 message Money {
   string currencyCode = 1;

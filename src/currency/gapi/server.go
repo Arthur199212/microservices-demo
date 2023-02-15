@@ -1,12 +1,12 @@
 package gapi
 
 import (
-	"github.com/Arthur199212/microservices-demo/src/currencies/data"
-	"github.com/Arthur199212/microservices-demo/src/currencies/pb"
+	"github.com/Arthur199212/microservices-demo/src/currency/data"
+	"github.com/Arthur199212/microservices-demo/src/currency/pb"
 )
 
 type Server struct {
-	pb.UnimplementedProductsServer
+	pb.UnimplementedCurrencyServer
 	cd data.CurrencyData
 }
 

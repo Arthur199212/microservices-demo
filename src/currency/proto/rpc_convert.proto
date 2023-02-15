@@ -4,7 +4,7 @@ package pb;
 
 import "money.proto";
 
-option go_package = "github.com/Arthur199212/microservices-demo/src/currencies/pb";
+option go_package = "github.com/Arthur199212/microservices-demo/src/currency/pb";
 
 message ConvertRequest {
   Money from = 1;

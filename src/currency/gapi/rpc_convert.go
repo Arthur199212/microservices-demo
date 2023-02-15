@@ -3,7 +3,7 @@ package gapi
 import (
 	"context"
 
-	"github.com/Arthur199212/microservices-demo/src/currencies/pb"
+	"github.com/Arthur199212/microservices-demo/src/currency/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
