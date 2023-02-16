@@ -6,14 +6,13 @@ import (
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func (s *Server) AddItem(
 	ctx context.Context,
 	req *cartv1.AddItemRequest,
-) (*emptypb.Empty, error) {
-	emptyResp := &emptypb.Empty{}
+) (*cartv1.AddItemResponse, error) {
+	emptyResp := &cartv1.AddItemResponse{}
 
 	sessionId := req.GetSessionId()
 	if sessionId == "" {

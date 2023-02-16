@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package services.currency.v1;
 
+message GetSupportedCurrenciesRequest {}
+
 message GetSupportedCurrenciesResponse {
   // The 3-letter currency code defined in ISO 4217.
-  repeated string currencyCodes = 1;
+  repeated string currency_codes = 1;
 }

@@ -11,9 +11,9 @@ service PaymentService {
 
 message ChargeRequest {
   models.v1.Money money = 1;
-  models.v1.CardInfo cardInfo = 2;
+  models.v1.CardInfo card_info = 2;
 }
 
 message ChargeResponse {
-  string transactionId = 1;
+  string transaction_id = 1;
 }

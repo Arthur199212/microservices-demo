@@ -3,7 +3,9 @@ syntax = "proto3";
 package services.cart.v1;
 
 message AddItemRequest {
-  string sessionId = 1;
-  int64 producId = 2;
+  string session_id = 1;
+  int64 produc_id = 2;
   int32 quantity = 3;
 }
+
+message AddItemResponse {}

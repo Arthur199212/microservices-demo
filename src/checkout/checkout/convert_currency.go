@@ -35,8 +35,6 @@ func (s *checkoutService) convertCurrency(
 			Msgf(errMsg.Error())
 		return nil, errMsg
 	}
-	return &modelsv1.Money{
-		CurrencyCode: resp.GetCurrencyCode(),
-		Amount:       resp.GetAmount(),
-	}, nil
+
+	return resp.GetMoney(), nil
 }

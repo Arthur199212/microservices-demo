@@ -8,11 +8,9 @@ package currencyv1
 
 import (
 	context "context"
-	v1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -24,8 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CurrencyServiceClient interface {
-	Convert(ctx context.Context, in *ConvertRequest, opts ...grpc.CallOption) (*v1.Money, error)
-	GetSupportedCurrencies(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error)
+	Convert(ctx context.Context, in *ConvertRequest, opts ...grpc.CallOption) (*ConvertResponse, error)
+	GetSupportedCurrencies(ctx context.Context, in *GetSupportedCurrenciesRequest, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error)
 }
 
 type currencyServiceClient struct {
@@ -36,8 +34,8 @@ func NewCurrencyServiceClient(cc grpc.ClientConnInterface) CurrencyServiceClient
 	return &currencyServiceClient{cc}
 }
 
-func (c *currencyServiceClient) Convert(ctx context.Context, in *ConvertRequest, opts ...grpc.CallOption) (*v1.Money, error) {
-	out := new(v1.Money)
+func (c *currencyServiceClient) Convert(ctx context.Context, in *ConvertRequest, opts ...grpc.CallOption) (*ConvertResponse, error) {
+	out := new(ConvertResponse)
 	err := c.cc.Invoke(ctx, "/services.currency.v1.CurrencyService/Convert", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -45,7 +43,7 @@ func (c *currencyServiceClient) Convert(ctx context.Context, in *ConvertRequest,
 	return out, nil
 }
 
-func (c *currencyServiceClient) GetSupportedCurrencies(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error) {
+func (c *currencyServiceClient) GetSupportedCurrencies(ctx context.Context, in *GetSupportedCurrenciesRequest, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error) {
 	out := new(GetSupportedCurrenciesResponse)
 	err := c.cc.Invoke(ctx, "/services.currency.v1.CurrencyService/GetSupportedCurrencies", in, out, opts...)
 	if err != nil {
@@ -58,8 +56,8 @@ func (c *currencyServiceClient) GetSupportedCurrencies(ctx context.Context, in *
 // All implementations must embed UnimplementedCurrencyServiceServer
 // for forward compatibility
 type CurrencyServiceServer interface {
-	Convert(context.Context, *ConvertRequest) (*v1.Money, error)
-	GetSupportedCurrencies(context.Context, *emptypb.Empty) (*GetSupportedCurrenciesResponse, error)
+	Convert(context.Context, *ConvertRequest) (*ConvertResponse, error)
+	GetSupportedCurrencies(context.Context, *GetSupportedCurrenciesRequest) (*GetSupportedCurrenciesResponse, error)
 	mustEmbedUnimplementedCurrencyServiceServer()
 }
 
@@ -67,10 +65,10 @@ type CurrencyServiceServer interface {
 type UnimplementedCurrencyServiceServer struct {
 }
 
-func (UnimplementedCurrencyServiceServer) Convert(context.Context, *ConvertRequest) (*v1.Money, error) {
+func (UnimplementedCurrencyServiceServer) Convert(context.Context, *ConvertRequest) (*ConvertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Convert not implemented")
 }
-func (UnimplementedCurrencyServiceServer) GetSupportedCurrencies(context.Context, *emptypb.Empty) (*GetSupportedCurrenciesResponse, error) {
+func (UnimplementedCurrencyServiceServer) GetSupportedCurrencies(context.Context, *GetSupportedCurrenciesRequest) (*GetSupportedCurrenciesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSupportedCurrencies not implemented")
 }
 func (UnimplementedCurrencyServiceServer) mustEmbedUnimplementedCurrencyServiceServer() {}
@@ -105,7 +103,7 @@ func _CurrencyService_Convert_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _CurrencyService_GetSupportedCurrencies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(GetSupportedCurrenciesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -117,7 +115,7 @@ func _CurrencyService_GetSupportedCurrencies_Handler(srv interface{}, ctx contex
 		FullMethod: "/services.currency.v1.CurrencyService/GetSupportedCurrencies",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CurrencyServiceServer).GetSupportedCurrencies(ctx, req.(*emptypb.Empty))
+		return srv.(CurrencyServiceServer).GetSupportedCurrencies(ctx, req.(*GetSupportedCurrenciesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

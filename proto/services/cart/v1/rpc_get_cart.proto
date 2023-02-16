@@ -5,10 +5,10 @@ package services.cart.v1;
 import "models/v1/product.proto";
 
 message GetCartRequest {
-  string sessionId = 1;
+  string session_id = 1;
 }
 
 message GetCartResponse {
-	string sessionId = 1;
+	string session_id = 1;
   repeated models.v1.Product products = 2;
 }

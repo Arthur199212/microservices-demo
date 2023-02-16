@@ -11,5 +11,5 @@ message ShipOrderRequest {
 }
 
 message ShipOrderResponse {
-  string trackingId = 1;
+  string tracking_id = 1;
 }

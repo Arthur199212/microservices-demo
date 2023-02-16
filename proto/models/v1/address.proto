@@ -6,6 +6,6 @@ message Address {
   string city = 1;
   string country = 2;
   string state = 3;
-  string streetAddress = 4;
-  string zipCode = 5;
+  string street_address = 4;
+  string zip_code = 5;
 }

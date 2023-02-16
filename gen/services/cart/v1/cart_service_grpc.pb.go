@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,8 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CartServiceClient interface {
-	AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	ClearCart(ctx context.Context, in *ClearCartRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*AddItemResponse, error)
+	ClearCart(ctx context.Context, in *ClearCartRequest, opts ...grpc.CallOption) (*ClearCartResponse, error)
 	GetCart(ctx context.Context, in *GetCartRequest, opts ...grpc.CallOption) (*GetCartResponse, error)
 }
 
@@ -36,8 +35,8 @@ func NewCartServiceClient(cc grpc.ClientConnInterface) CartServiceClient {
 	return &cartServiceClient{cc}
 }
 
-func (c *cartServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *cartServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*AddItemResponse, error) {
+	out := new(AddItemResponse)
 	err := c.cc.Invoke(ctx, "/services.cart.v1.CartService/AddItem", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -45,8 +44,8 @@ func (c *cartServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opt
 	return out, nil
 }
 
-func (c *cartServiceClient) ClearCart(ctx context.Context, in *ClearCartRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *cartServiceClient) ClearCart(ctx context.Context, in *ClearCartRequest, opts ...grpc.CallOption) (*ClearCartResponse, error) {
+	out := new(ClearCartResponse)
 	err := c.cc.Invoke(ctx, "/services.cart.v1.CartService/ClearCart", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -67,8 +66,8 @@ func (c *cartServiceClient) GetCart(ctx context.Context, in *GetCartRequest, opt
 // All implementations must embed UnimplementedCartServiceServer
 // for forward compatibility
 type CartServiceServer interface {
-	AddItem(context.Context, *AddItemRequest) (*emptypb.Empty, error)
-	ClearCart(context.Context, *ClearCartRequest) (*emptypb.Empty, error)
+	AddItem(context.Context, *AddItemRequest) (*AddItemResponse, error)
+	ClearCart(context.Context, *ClearCartRequest) (*ClearCartResponse, error)
 	GetCart(context.Context, *GetCartRequest) (*GetCartResponse, error)
 	mustEmbedUnimplementedCartServiceServer()
 }
@@ -77,10 +76,10 @@ type CartServiceServer interface {
 type UnimplementedCartServiceServer struct {
 }
 
-func (UnimplementedCartServiceServer) AddItem(context.Context, *AddItemRequest) (*emptypb.Empty, error) {
+func (UnimplementedCartServiceServer) AddItem(context.Context, *AddItemRequest) (*AddItemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddItem not implemented")
 }
-func (UnimplementedCartServiceServer) ClearCart(context.Context, *ClearCartRequest) (*emptypb.Empty, error) {
+func (UnimplementedCartServiceServer) ClearCart(context.Context, *ClearCartRequest) (*ClearCartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ClearCart not implemented")
 }
 func (UnimplementedCartServiceServer) GetCart(context.Context, *GetCartRequest) (*GetCartResponse, error) {

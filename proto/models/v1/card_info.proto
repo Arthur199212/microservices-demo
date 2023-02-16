@@ -4,7 +4,7 @@ package models.v1;
 
 message CardInfo {
   int32 cvv = 1;
-  int32 expirationMonth = 2;
-  int32 expirationYear = 3;
+  int32 expiration_month = 2;
+  int32 expiration_year = 3;
   string number = 4;
 }

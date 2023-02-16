@@ -7,14 +7,13 @@ import (
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func (s *Server) ClearCart(
 	ctx context.Context,
 	req *cartv1.ClearCartRequest,
-) (*emptypb.Empty, error) {
-	emptyResp := &emptypb.Empty{}
+) (*cartv1.ClearCartResponse, error) {
+	emptyResp := &cartv1.ClearCartResponse{}
 
 	sessionId := req.GetSessionId()
 	if sessionId == "" {

@@ -6,5 +6,9 @@ import "models/v1/money.proto";
 
 message ConvertRequest {
   models.v1.Money from = 1;
-  string toCurrencyCode = 2;
+  string to_currency_code = 2;
+}
+
+message ConvertResponse {
+  models.v1.Money money = 1;
 }

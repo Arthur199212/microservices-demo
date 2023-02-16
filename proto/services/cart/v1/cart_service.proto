@@ -2,13 +2,12 @@ syntax = "proto3";
 
 package services.cart.v1;
 
-import "google/protobuf/empty.proto";
 import "services/cart/v1/rpc_add_item.proto";
 import "services/cart/v1/rpc_clear_cart.proto";
 import "services/cart/v1/rpc_get_cart.proto";
 
 service CartService {
-  rpc AddItem (AddItemRequest) returns (google.protobuf.Empty) {}
-  rpc ClearCart (ClearCartRequest) returns (google.protobuf.Empty) {}
+  rpc AddItem (AddItemRequest) returns (AddItemResponse) {}
+  rpc ClearCart (ClearCartRequest) returns (ClearCartResponse) {}
   rpc GetCart (GetCartRequest) returns (GetCartResponse) {}
 }

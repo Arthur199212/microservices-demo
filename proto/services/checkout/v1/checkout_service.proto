@@ -11,11 +11,11 @@ service CheckoutService {
 }
 
 message PlaceOrderRequest {
-  string sessionId = 1;
-  string userCurrency = 2;
+  string session_id = 1;
+  string user_currency = 2;
   models.v1.Address address = 3;
   string email = 4;
-  models.v1.CardInfo cardInfo = 5;
+  models.v1.CardInfo card_info = 5;
 }
 
 message PlaceOrderResponse {

@@ -12,26 +12,29 @@ import (
 func (s *Server) Convert(
 	ctx context.Context,
 	req *currencyv1.ConvertRequest,
-) (*modelsv1.Money, error) {
+) (*currencyv1.ConvertResponse, error) {
 	money := req.GetFrom()
 	if money.GetAmount() < 0 {
-		return &modelsv1.Money{}, status.Errorf(codes.InvalidArgument, "amount should be greater than zero")
+		return nil, status.Errorf(codes.InvalidArgument, "amount should be greater than zero")
 	}
 
 	if err := s.cd.VerifySupportedCurrency(money.CurrencyCode); err != nil {
-		return &modelsv1.Money{}, status.Errorf(codes.InvalidArgument, err.Error())
+		return nil, status.Errorf(codes.InvalidArgument, err.Error())
 	}
 	if err := s.cd.VerifySupportedCurrency(req.GetToCurrencyCode()); err != nil {
-		return &modelsv1.Money{}, status.Errorf(codes.InvalidArgument, err.Error())
+		return nil, status.Errorf(codes.InvalidArgument, err.Error())
 	}
 
 	convertedAmount, err := s.cd.Convert(money.CurrencyCode, req.GetToCurrencyCode(), money.GetAmount())
 	if err != nil {
-		return &modelsv1.Money{}, status.Errorf(codes.InvalidArgument, err.Error())
+		return nil, status.Errorf(codes.InvalidArgument, err.Error())
 	}
 
-	return &modelsv1.Money{
-		CurrencyCode: req.GetToCurrencyCode(),
-		Amount:       convertedAmount,
-	}, nil
+	resp := &currencyv1.ConvertResponse{
+		Money: &modelsv1.Money{
+			CurrencyCode: req.GetToCurrencyCode(),
+			Amount:       convertedAmount,
+		},
+	}
+	return resp, nil
 }
