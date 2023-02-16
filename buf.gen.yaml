@@ -1,0 +1,12 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/Arthur199212/microservices-demo/gen
+plugins:
+  - plugin: buf.build/protocolbuffers/go # built in 'go' plugin
+    out: gen
+    opt: paths=source_relative
+  - plugin: buf.build/grpc/go # built in 'go-grpc' plugin
+    out: gen
+    opt: paths=source_relative

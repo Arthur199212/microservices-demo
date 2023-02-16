@@ -3,12 +3,12 @@ module github.com/Arthur199212/microservices-demo/src/payment
 go 1.20
 
 require (
+	github.com/Arthur199212/microservices-demo v0.0.0
 	github.com/durango/go-credit-card v0.0.0-20220404131259-a9e175ba4082
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.1
 	google.golang.org/grpc v1.52.3
-	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -22,6 +22,9 @@ require (
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230202175211-008b39050e57 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/Arthur199212/microservices-demo v0.0.0 => ../../

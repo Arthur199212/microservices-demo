@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net"
 
+	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
 	"github.com/Arthur199212/microservices-demo/src/payment/gapi"
-	"github.com/Arthur199212/microservices-demo/src/payment/pb"
 	"github.com/Arthur199212/microservices-demo/src/payment/utils"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
@@ -17,7 +17,7 @@ func main() {
 
 	srv := gapi.NewServer(config)
 	grpcServer := grpc.NewServer()
-	pb.RegisterPaymentServer(grpcServer, srv)
+	paymentv1.RegisterPaymentServiceServer(grpcServer, srv)
 
 	reflection.Register(grpcServer)
 

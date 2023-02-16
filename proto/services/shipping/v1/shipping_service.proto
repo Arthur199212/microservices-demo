@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package services.shipping.v1;
+
+import "services/shipping/v1/rpc_get_quote.proto";
+import "services/shipping/v1/rpc_ship_order.proto";
+
+service ShippingService {
+  rpc GetQuote(GetQuoteRequest) returns (GetQuoteResponse) {}
+  rpc ShipOrder(ShipOrderRequest) returns (ShipOrderResponse) {}
+}

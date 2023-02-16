@@ -3,32 +3,32 @@ package checkout
 import (
 	"context"
 
-	cart "github.com/Arthur199212/microservices-demo/src/cart/pb"
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
-	currency "github.com/Arthur199212/microservices-demo/src/currency/pb"
-	payment "github.com/Arthur199212/microservices-demo/src/payment/pb"
-	products "github.com/Arthur199212/microservices-demo/src/products/pb"
-	shipping "github.com/Arthur199212/microservices-demo/src/shipping/pb"
+	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
+	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
+	currencyv1 "github.com/Arthur199212/microservices-demo/gen/services/currency/v1"
+	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
+	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 )
 
 type CheckoutService interface {
-	PlaceOrder(context.Context, PlaceOrderArgs) (*pb.Order, error)
+	PlaceOrder(context.Context, PlaceOrderArgs) (*checkoutv1.Order, error)
 }
 
 type checkoutService struct {
-	cartClient     cart.CartClient
-	currencyClient currency.CurrencyClient
-	paymentClient  payment.PaymentClient
-	productsClient products.ProductsClient
-	shippingClient shipping.ShippingClient
+	cartClient     cartv1.CartServiceClient
+	currencyClient currencyv1.CurrencyServiceClient
+	paymentClient  paymentv1.PaymentServiceClient
+	productsClient productsv1.ProductsServiceClient
+	shippingClient shippingv1.ShippingServiceClient
 }
 
 func NewCheckoutService(
-	cartClient cart.CartClient,
-	currencyClient currency.CurrencyClient,
-	paymentClient payment.PaymentClient,
-	productsClient products.ProductsClient,
-	shippingClient shipping.ShippingClient,
+	cartClient cartv1.CartServiceClient,
+	currencyClient currencyv1.CurrencyServiceClient,
+	paymentClient paymentv1.PaymentServiceClient,
+	productsClient productsv1.ProductsServiceClient,
+	shippingClient shippingv1.ShippingServiceClient,
 ) CheckoutService {
 	return &checkoutService{
 		cartClient:     cartClient,

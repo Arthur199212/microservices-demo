@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
+	currencyv1 "github.com/Arthur199212/microservices-demo/gen/services/currency/v1"
 	"github.com/Arthur199212/microservices-demo/src/currency/data"
 	"github.com/Arthur199212/microservices-demo/src/currency/gapi"
-	"github.com/Arthur199212/microservices-demo/src/currency/pb"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -32,7 +32,7 @@ func main() {
 
 	srv := gapi.NewServer(cd)
 	grpcServer := grpc.NewServer()
-	pb.RegisterCurrencyServer(grpcServer, srv)
+	currencyv1.RegisterCurrencyServiceServer(grpcServer, srv)
 
 	// to provide self-documentation
 	reflection.Register(grpcServer)

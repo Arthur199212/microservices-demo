@@ -1,11 +1,11 @@
 package gapi
 
 import (
-	"github.com/Arthur199212/microservices-demo/src/shipping/pb"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	"github.com/Arthur199212/microservices-demo/src/shipping/shipping"
 )
 
-func convertToProducts(products []*pb.Product) []shipping.Product {
+func convertToProducts(products []*modelsv1.Product) []shipping.Product {
 	sp := make([]shipping.Product, len(products))
 	for i, p := range products {
 		sp[i] = shipping.Product{
@@ -16,7 +16,7 @@ func convertToProducts(products []*pb.Product) []shipping.Product {
 	return sp
 }
 
-func convertToAddress(address *pb.Address) shipping.Address {
+func convertToAddress(address *modelsv1.Address) shipping.Address {
 	var state *string = &address.State
 	if *state == "" {
 		state = nil

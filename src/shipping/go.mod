@@ -3,13 +3,13 @@ module github.com/Arthur199212/microservices-demo/src/shipping
 go 1.20
 
 require (
+	github.com/Arthur199212/microservices-demo v0.0.0
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.1
 	google.golang.org/grpc v1.53.0
-	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -27,5 +27,8 @@ require (
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/Arthur199212/microservices-demo v0.0.0 => ../../

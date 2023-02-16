@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package services.products.v1;
+
+import "services/products/v1/product.proto";
+
+message ListProductsRequest {
+  int32 page = 1;
+  int32 pageSize = 2;
+}
+
+message ListProductsResponse {
+  repeated Product products = 1;
+}

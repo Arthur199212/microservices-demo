@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package models.v1;
+
+message Money {
+  float amount = 1;
+  string currencyCode = 2;
+}

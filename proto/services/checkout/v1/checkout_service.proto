@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package services.checkout.v1;
+
+import "models/v1/address.proto";
+import "models/v1/card_info.proto";
+import "services/checkout/v1/order.proto";
+
+service CheckoutService {
+  rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderResponse) {}
+}
+
+message PlaceOrderRequest {
+  string sessionId = 1;
+  string userCurrency = 2;
+  models.v1.Address address = 3;
+  string email = 4;
+  models.v1.CardInfo cardInfo = 5;
+}
+
+message PlaceOrderResponse {
+  Order order = 1;
+}

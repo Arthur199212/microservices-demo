@@ -5,8 +5,8 @@ import (
 	"net"
 	"os"
 
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	"github.com/Arthur199212/microservices-demo/src/shipping/gapi"
-	"github.com/Arthur199212/microservices-demo/src/shipping/pb"
 	"github.com/Arthur199212/microservices-demo/src/shipping/shipping"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
@@ -26,7 +26,7 @@ func main() {
 	shippingService := shipping.NewShippingService()
 	srv := gapi.NewServer(shippingService)
 	grpcServer := grpc.NewServer()
-	pb.RegisterShippingServer(grpcServer, srv)
+	shippingv1.RegisterShippingServiceServer(grpcServer, srv)
 
 	// to provide self-documentation
 	reflection.Register(grpcServer)

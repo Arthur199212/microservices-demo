@@ -4,9 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
-	ss "github.com/Arthur199212/microservices-demo/src/shipping/shipping"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
 )
+
+type Address struct {
+	StreetAddress string  `validate:"required,min=5,max=64"`
+	City          string  `validate:"required,min=2,max=64"`
+	Country       string  `validate:"required,min=2,max=64"`
+	ZipCode       string  `validate:"required,numeric,min=4,max=10"`
+	State         *string `validate:"omitempty,min=2,max=64"`
+}
 
 type CardInfo struct {
 	Cvv             int32  `validate:"required,numeric,min=3,max=4"`
@@ -16,7 +24,7 @@ type CardInfo struct {
 }
 
 type PlaceOrderArgs struct {
-	Address      ss.Address
+	Address      Address
 	CardInfo     CardInfo
 	Email        string `validate:"required,email"`
 	SessionId    string `validate:"required,uuid4"`
@@ -26,7 +34,7 @@ type PlaceOrderArgs struct {
 func (s *checkoutService) PlaceOrder(
 	ctx context.Context,
 	args PlaceOrderArgs,
-) (*pb.Order, error) {
+) (*checkoutv1.Order, error) {
 	products, err := s.getCartProducts(ctx, args.SessionId)
 	if err != nil {
 		return nil, fmt.Errorf("cart failure: %+v", err)
@@ -42,7 +50,7 @@ func (s *checkoutService) PlaceOrder(
 		return nil, err
 	}
 
-	totalSum := &pb.Money{
+	totalSum := &modelsv1.Money{
 		CurrencyCode: defaultCurrency,
 		Amount:       shippingCost.Amount,
 	}
@@ -55,11 +63,11 @@ func (s *checkoutService) PlaceOrder(
 		return nil, err
 	}
 
-	order := &pb.Order{
+	order := &checkoutv1.Order{
 		TransactionId: transactionId,
-		Shipping: &pb.Shipping{
+		Shipping: &checkoutv1.Shipping{
 			Cost: shippingCost,
-			Address: &pb.Address{
+			Address: &modelsv1.Address{
 				StreetAddress: args.Address.StreetAddress,
 				City:          args.Address.City,
 				State:         *args.Address.State,

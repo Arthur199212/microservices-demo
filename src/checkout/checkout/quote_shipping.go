@@ -4,26 +4,25 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
-	shipping "github.com/Arthur199212/microservices-demo/src/shipping/pb"
-	ss "github.com/Arthur199212/microservices-demo/src/shipping/shipping"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	"github.com/rs/zerolog/log"
 )
 
 func (s *checkoutService) quoteShipping(
 	ctx context.Context,
-	address ss.Address,
-	cartProducts []*pb.Product,
+	address Address,
+	cartProducts []*modelsv1.Product,
 	userCurrency string,
-) (*pb.Money, error) {
-	products := make([]*shipping.Product, len(cartProducts))
+) (*modelsv1.Money, error) {
+	products := make([]*modelsv1.Product, len(cartProducts))
 	for i, p := range cartProducts {
-		products[i] = &shipping.Product{
+		products[i] = &modelsv1.Product{
 			Id:       p.Id,
 			Quantity: p.Quantity,
 		}
 	}
-	shippingAddress := &shipping.Address{
+	shippingAddress := &modelsv1.Address{
 		StreetAddress: address.StreetAddress,
 		City:          address.City,
 		State:         *address.State,
@@ -31,7 +30,7 @@ func (s *checkoutService) quoteShipping(
 		ZipCode:       address.ZipCode,
 	}
 
-	resp, err := s.shippingClient.GetQuote(ctx, &shipping.GetQuoteRequest{
+	resp, err := s.shippingClient.GetQuote(ctx, &shippingv1.GetQuoteRequest{
 		Address:  shippingAddress,
 		Products: products,
 	})

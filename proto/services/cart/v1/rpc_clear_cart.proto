@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package services.cart.v1;
+
+message ClearCartRequest {
+  string sessionId = 1;
+}

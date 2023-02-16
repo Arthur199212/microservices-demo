@@ -5,9 +5,9 @@ import (
 	"net"
 	"os"
 
+	"github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	"github.com/Arthur199212/microservices-demo/src/cart/db"
 	"github.com/Arthur199212/microservices-demo/src/cart/gapi"
-	"github.com/Arthur199212/microservices-demo/src/cart/pb"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -26,7 +26,7 @@ func main() {
 	db := db.NewCartDB()
 	srv := gapi.NewServer(db)
 	grpcServer := grpc.NewServer()
-	pb.RegisterCartServer(grpcServer, srv)
+	cartv1.RegisterCartServiceServer(grpcServer, srv)
 
 	// to provide self-documentation
 	reflection.Register(grpcServer)

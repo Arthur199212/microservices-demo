@@ -3,6 +3,7 @@ module github.com/Arthur199212/microservices-demo/src/currency
 go 1.20
 
 require (
+	github.com/Arthur199212/microservices-demo v0.0.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.1
 	google.golang.org/grpc v1.52.0
@@ -21,3 +22,5 @@ require (
 	google.golang.org/genproto v0.0.0-20230123190316-2c411cf9d197 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/Arthur199212/microservices-demo v0.0.0 => ../../

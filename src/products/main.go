@@ -5,9 +5,9 @@ import (
 	"net"
 	"os"
 
+	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	"github.com/Arthur199212/microservices-demo/src/products/db"
 	"github.com/Arthur199212/microservices-demo/src/products/gapi"
-	"github.com/Arthur199212/microservices-demo/src/products/pb"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -26,7 +26,7 @@ func main() {
 	pdb := db.NewProductsDB()
 	srv := gapi.NewServer(pdb)
 	grpcServer := grpc.NewServer()
-	pb.RegisterProductsServer(grpcServer, srv)
+	productsv1.RegisterProductsServiceServer(grpcServer, srv)
 
 	// to provide self-documentation
 	reflection.Register(grpcServer)

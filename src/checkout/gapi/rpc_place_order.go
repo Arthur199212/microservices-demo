@@ -3,14 +3,14 @@ package gapi
 import (
 	"context"
 
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
 	"github.com/Arthur199212/microservices-demo/src/checkout/checkout"
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
-	"github.com/Arthur199212/microservices-demo/src/shipping/shipping"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) PlaceOrder(ctx context.Context, req *pb.PlaceOrderRequest) (*pb.PlaceOrderResponse, error) {
+func (s *Server) PlaceOrder(ctx context.Context, req *checkoutv1.PlaceOrderRequest) (*checkoutv1.PlaceOrderResponse, error) {
 	args := checkout.PlaceOrderArgs{
 		Address:      convertToAddress(req.GetAddress()),
 		CardInfo:     convertToCardInfo(req.GetCardInfo()),
@@ -27,13 +27,13 @@ func (s *Server) PlaceOrder(ctx context.Context, req *pb.PlaceOrderRequest) (*pb
 		status.Errorf(codes.Internal, err.Error())
 	}
 
-	return &pb.PlaceOrderResponse{
+	return &checkoutv1.PlaceOrderResponse{
 		Order: order,
 	}, nil
 }
 
-func convertToAddress(address *pb.Address) shipping.Address {
-	return shipping.Address{
+func convertToAddress(address *modelsv1.Address) checkout.Address {
+	return checkout.Address{
 		StreetAddress: address.StreetAddress,
 		City:          address.City,
 		Country:       address.Country,
@@ -42,7 +42,7 @@ func convertToAddress(address *pb.Address) shipping.Address {
 	}
 }
 
-func convertToCardInfo(cardInfo *pb.CardInfo) checkout.CardInfo {
+func convertToCardInfo(cardInfo *modelsv1.CardInfo) checkout.CardInfo {
 	return checkout.CardInfo{
 		Cvv:             cardInfo.Cvv,
 		ExpirationMonth: cardInfo.ExpirationMonth,

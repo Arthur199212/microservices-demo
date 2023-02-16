@@ -1,12 +1,12 @@
 package gapi
 
 import (
+	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	"github.com/Arthur199212/microservices-demo/src/products/db"
-	"github.com/Arthur199212/microservices-demo/src/products/pb"
 )
 
 type Server struct {
-	pb.UnimplementedProductsServer
+	productsv1.UnimplementedProductsServiceServer
 	pdb db.ProductDB
 }
 

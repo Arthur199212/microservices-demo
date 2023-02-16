@@ -3,7 +3,7 @@ package gapi
 import (
 	"context"
 
-	"github.com/Arthur199212/microservices-demo/src/cart/pb"
+	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -11,7 +11,7 @@ import (
 
 func (s *Server) AddItem(
 	ctx context.Context,
-	req *pb.AddItemRequest,
+	req *cartv1.AddItemRequest,
 ) (*emptypb.Empty, error) {
 	emptyResp := &emptypb.Empty{}
 

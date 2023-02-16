@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package models.v1;
+
+message Address {
+  string city = 1;
+  string country = 2;
+  string state = 3;
+  string streetAddress = 4;
+  string zipCode = 5;
+}

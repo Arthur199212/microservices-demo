@@ -4,22 +4,22 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
-	payment "github.com/Arthur199212/microservices-demo/src/payment/pb"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
 	"github.com/rs/zerolog/log"
 )
 
 func (s *checkoutService) chargeCard(
 	ctx context.Context,
 	cardInfo CardInfo,
-	money *pb.Money,
+	money *modelsv1.Money,
 ) (string, error) {
-	resp, err := s.paymentClient.Charge(ctx, &payment.ChargeRequest{
-		Money: &payment.Money{
+	resp, err := s.paymentClient.Charge(ctx, &paymentv1.ChargeRequest{
+		Money: &modelsv1.Money{
 			CurrencyCode: money.CurrencyCode,
 			Amount:       money.Amount,
 		},
-		CardInfo: &payment.CardInfo{
+		CardInfo: &modelsv1.CardInfo{
 			Number:          cardInfo.Number,
 			Cvv:             cardInfo.Cvv,
 			ExpirationYear:  cardInfo.ExpirationYear,

@@ -4,7 +4,7 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/Arthur199212/microservices-demo/src/payment/pb"
+	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
 	creditcard "github.com/durango/go-credit-card"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
@@ -13,11 +13,11 @@ import (
 
 func (s *Server) Charge(
 	ctx context.Context,
-	req *pb.ChargeRequest,
-) (*pb.ChargeResponse, error) {
+	req *paymentv1.ChargeRequest,
+) (*paymentv1.ChargeResponse, error) {
 	money := req.GetMoney()
 	if money.GetAmount() < 0 {
-		return &pb.ChargeResponse{}, status.Errorf(codes.InvalidArgument, "amount should be greater than 0")
+		return &paymentv1.ChargeResponse{}, status.Errorf(codes.InvalidArgument, "amount should be greater than 0")
 	}
 
 	cardInfo := req.GetCardInfo()
@@ -28,17 +28,17 @@ func (s *Server) Charge(
 		Year:   strconv.Itoa(int(cardInfo.GetExpirationYear())),
 	}
 	if err := card.Validate(s.config.AllowTestCardNumbers); err != nil {
-		return &pb.ChargeResponse{}, status.Errorf(codes.InvalidArgument, err.Error())
+		return &paymentv1.ChargeResponse{}, status.Errorf(codes.InvalidArgument, err.Error())
 	}
 	if err := card.Method(); err != nil {
-		return &pb.ChargeResponse{}, status.Errorf(codes.InvalidArgument, err.Error())
+		return &paymentv1.ChargeResponse{}, status.Errorf(codes.InvalidArgument, err.Error())
 	}
 	if !(card.Company.Short == "visa" || card.Company.Short == "mastercard") {
-		return &pb.ChargeResponse{}, status.Errorf(codes.InvalidArgument, "only visa of mastercard is accepted")
+		return &paymentv1.ChargeResponse{}, status.Errorf(codes.InvalidArgument, "only visa of mastercard is accepted")
 	}
 
 	transactionId := uuid.New().String()
-	return &pb.ChargeResponse{
+	return &paymentv1.ChargeResponse{
 		TransactionId: transactionId,
 	}, nil
 }

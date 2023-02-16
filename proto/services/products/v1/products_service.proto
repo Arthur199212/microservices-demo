@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package services.products.v1;
+
+import "services/products/v1/rpc_get_product.proto";
+import "services/products/v1/rpc_list_products.proto";
+
+service ProductsService {
+  rpc ListProducts (ListProductsRequest) returns (ListProductsResponse) {}
+  rpc GetProduct (GetProductRequest) returns (GetProductResponse) {}
+}

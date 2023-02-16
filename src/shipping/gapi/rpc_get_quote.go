@@ -3,12 +3,12 @@ package gapi
 import (
 	"context"
 
-	"github.com/Arthur199212/microservices-demo/src/shipping/pb"
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetQuote(ctx context.Context, req *pb.GetQuoteRequest) (*pb.GetQuoteResponse, error) {
+func (s *Server) GetQuote(ctx context.Context, req *shippingv1.GetQuoteRequest) (*shippingv1.GetQuoteResponse, error) {
 	products := convertToProducts(req.GetProducts())
 	if len(products) < 1 {
 		return nil, status.Errorf(codes.InvalidArgument, "product list is empty")
@@ -30,7 +30,7 @@ func (s *Server) GetQuote(ctx context.Context, req *pb.GetQuoteRequest) (*pb.Get
 		return nil, status.Errorf(codes.Internal, err.Error())
 	}
 
-	return &pb.GetQuoteResponse{
+	return &shippingv1.GetQuoteResponse{
 		Quote:        quote.Quote,
 		CurrencyCode: quote.CurrencyCode,
 	}, nil

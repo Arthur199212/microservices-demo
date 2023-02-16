@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+package services.checkout.v1;
+
+import "models/v1/money.proto";
+import "models/v1/product.proto";
+
+message OrderItem {
+  models.v1.Product product = 1;
+  models.v1.Money cost = 2;
+}

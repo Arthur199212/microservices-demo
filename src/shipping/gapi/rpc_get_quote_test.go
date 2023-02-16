@@ -7,7 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Arthur199212/microservices-demo/src/shipping/pb"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	"github.com/Arthur199212/microservices-demo/src/shipping/shipping"
 	mock_shipping "github.com/Arthur199212/microservices-demo/src/shipping/shipping/mocks"
 	"github.com/golang/mock/gomock"
@@ -43,26 +44,26 @@ func TestGetQuote(t *testing.T) {
 
 	testCases := []struct {
 		name      string
-		address   *pb.Address
-		products  []*pb.Product
+		address   *modelsv1.Address
+		products  []*modelsv1.Product
 		setupMock func(*mock_shipping.MockShippingService)
-		verify    func(*pb.GetQuoteResponse, error)
+		verify    func(*shippingv1.GetQuoteResponse, error)
 	}{
 		{
 			name: "OK",
-			address: &pb.Address{
+			address: &modelsv1.Address{
 				StreetAddress: mockAddress.StreetAddress,
 				City:          mockAddress.City,
 				State:         *mockAddress.State,
 				Country:       mockAddress.Country,
 				ZipCode:       mockAddress.ZipCode,
 			},
-			products: []*pb.Product{
-				&pb.Product{
+			products: []*modelsv1.Product{
+				&modelsv1.Product{
 					Id:       productOne.ID,
 					Quantity: productOne.Quantity,
 				},
-				&pb.Product{
+				&modelsv1.Product{
 					Id:       productTwo.ID,
 					Quantity: productTwo.Quantity,
 				},
@@ -74,7 +75,7 @@ func TestGetQuote(t *testing.T) {
 					Times(1).
 					Return(quoteMock, nil)
 			},
-			verify: func(resp *pb.GetQuoteResponse, err error) {
+			verify: func(resp *shippingv1.GetQuoteResponse, err error) {
 				assert.NoError(t, err)
 				assert.Equal(t, quoteMock.CurrencyCode, resp.CurrencyCode)
 				assert.Equal(t, quoteMock.Quote, resp.Quote)
@@ -82,19 +83,19 @@ func TestGetQuote(t *testing.T) {
 		},
 		{
 			name: "state in the address is empty",
-			address: &pb.Address{
+			address: &modelsv1.Address{
 				StreetAddress: mockAddress.StreetAddress,
 				City:          mockAddress.City,
 				State:         "",
 				Country:       mockAddress.Country,
 				ZipCode:       mockAddress.ZipCode,
 			},
-			products: []*pb.Product{
-				&pb.Product{
+			products: []*modelsv1.Product{
+				&modelsv1.Product{
 					Id:       productOne.ID,
 					Quantity: productOne.Quantity,
 				},
-				&pb.Product{
+				&modelsv1.Product{
 					Id:       productTwo.ID,
 					Quantity: productTwo.Quantity,
 				},
@@ -115,7 +116,7 @@ func TestGetQuote(t *testing.T) {
 					Times(1).
 					Return(quoteMock, nil)
 			},
-			verify: func(resp *pb.GetQuoteResponse, err error) {
+			verify: func(resp *shippingv1.GetQuoteResponse, err error) {
 				assert.NoError(t, err)
 				assert.Equal(t, quoteMock.CurrencyCode, resp.CurrencyCode)
 				assert.Equal(t, quoteMock.Quote, resp.Quote)
@@ -123,16 +124,16 @@ func TestGetQuote(t *testing.T) {
 		},
 		{
 			name: "no products to ship",
-			address: &pb.Address{
+			address: &modelsv1.Address{
 				StreetAddress: mockAddress.StreetAddress,
 				City:          mockAddress.City,
 				State:         *mockAddress.State,
 				Country:       mockAddress.Country,
 				ZipCode:       mockAddress.ZipCode,
 			},
-			products:  []*pb.Product{},
+			products:  []*modelsv1.Product{},
 			setupMock: func(mss *mock_shipping.MockShippingService) {},
-			verify: func(resp *pb.GetQuoteResponse, err error) {
+			verify: func(resp *shippingv1.GetQuoteResponse, err error) {
 				assert.Error(t, err)
 				assert.Empty(t, resp)
 				assert.ErrorContains(t, err, codes.InvalidArgument.String())
@@ -140,16 +141,16 @@ func TestGetQuote(t *testing.T) {
 		},
 		{
 			name: "too many products to ship",
-			address: &pb.Address{
+			address: &modelsv1.Address{
 				StreetAddress: mockAddress.StreetAddress,
 				City:          mockAddress.City,
 				State:         *mockAddress.State,
 				Country:       mockAddress.Country,
 				ZipCode:       mockAddress.ZipCode,
 			},
-			products:  make([]*pb.Product, maxProductsToShip+1),
+			products:  make([]*modelsv1.Product, maxProductsToShip+1),
 			setupMock: func(mss *mock_shipping.MockShippingService) {},
-			verify: func(resp *pb.GetQuoteResponse, err error) {
+			verify: func(resp *shippingv1.GetQuoteResponse, err error) {
 				assert.Error(t, err)
 				assert.Empty(t, resp)
 				assert.ErrorContains(t, err, codes.InvalidArgument.String())
@@ -157,21 +158,21 @@ func TestGetQuote(t *testing.T) {
 		},
 		{
 			name: "invalid quantity",
-			address: &pb.Address{
+			address: &modelsv1.Address{
 				StreetAddress: mockAddress.StreetAddress,
 				City:          mockAddress.City,
 				State:         *mockAddress.State,
 				Country:       mockAddress.Country,
 				ZipCode:       mockAddress.ZipCode,
 			},
-			products: []*pb.Product{
-				&pb.Product{
+			products: []*modelsv1.Product{
+				&modelsv1.Product{
 					Id:       productOne.ID,
 					Quantity: -1,
 				},
 			},
 			setupMock: func(s *mock_shipping.MockShippingService) {},
-			verify: func(resp *pb.GetQuoteResponse, err error) {
+			verify: func(resp *shippingv1.GetQuoteResponse, err error) {
 				assert.Error(t, err)
 				assert.Empty(t, resp)
 				assert.ErrorContains(t, err, codes.InvalidArgument.String())
@@ -179,21 +180,21 @@ func TestGetQuote(t *testing.T) {
 		},
 		{
 			name: "invalid streetAddress in the address",
-			address: &pb.Address{
+			address: &modelsv1.Address{
 				StreetAddress: "aa",
 				City:          mockAddress.City,
 				State:         *mockAddress.State,
 				Country:       mockAddress.Country,
 				ZipCode:       mockAddress.ZipCode,
 			},
-			products: []*pb.Product{
-				&pb.Product{
+			products: []*modelsv1.Product{
+				&modelsv1.Product{
 					Id:       productOne.ID,
 					Quantity: productOne.Quantity,
 				},
 			},
 			setupMock: func(s *mock_shipping.MockShippingService) {},
-			verify: func(resp *pb.GetQuoteResponse, err error) {
+			verify: func(resp *shippingv1.GetQuoteResponse, err error) {
 				assert.Error(t, err)
 				assert.Empty(t, resp)
 				assert.ErrorContains(t, err, codes.InvalidArgument.String())
@@ -201,19 +202,19 @@ func TestGetQuote(t *testing.T) {
 		},
 		{
 			name: "internal service error",
-			address: &pb.Address{
+			address: &modelsv1.Address{
 				StreetAddress: mockAddress.StreetAddress,
 				City:          mockAddress.City,
 				State:         *mockAddress.State,
 				Country:       mockAddress.Country,
 				ZipCode:       mockAddress.ZipCode,
 			},
-			products: []*pb.Product{
-				&pb.Product{
+			products: []*modelsv1.Product{
+				&modelsv1.Product{
 					Id:       productOne.ID,
 					Quantity: productOne.Quantity,
 				},
-				&pb.Product{
+				&modelsv1.Product{
 					Id:       productTwo.ID,
 					Quantity: productTwo.Quantity,
 				},
@@ -228,7 +229,7 @@ func TestGetQuote(t *testing.T) {
 						fmt.Errorf("mock error"),
 					)
 			},
-			verify: func(resp *pb.GetQuoteResponse, err error) {
+			verify: func(resp *shippingv1.GetQuoteResponse, err error) {
 				assert.Error(t, err)
 				assert.ErrorContains(t, err, codes.Internal.String())
 			},
@@ -249,7 +250,7 @@ func TestGetQuote(t *testing.T) {
 			t.Cleanup(func() {
 				grpcSrv.Stop()
 			})
-			pb.RegisterShippingServer(grpcSrv, srv)
+			shippingv1.RegisterShippingServiceServer(grpcSrv, srv)
 
 			lis := bufconn.Listen(1024 * 1024)
 			t.Cleanup(func() {
@@ -282,13 +283,13 @@ func TestGetQuote(t *testing.T) {
 			})
 			assert.NoError(t, err)
 
-			client := pb.NewShippingClient(conn)
+			client := shippingv1.NewShippingServiceClient(conn)
 
 			// setup mock
 			test.setupMock(shippingService)
 
 			// make a request
-			resp, err := client.GetQuote(ctx, &pb.GetQuoteRequest{
+			resp, err := client.GetQuote(ctx, &shippingv1.GetQuoteRequest{
 				Address:  test.address,
 				Products: test.products,
 			})

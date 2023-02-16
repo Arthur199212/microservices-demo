@@ -6,7 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Arthur199212/microservices-demo/src/payment/pb"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
 	"github.com/Arthur199212/microservices-demo/src/payment/utils"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
@@ -18,90 +19,90 @@ import (
 func TestChargeHandler(t *testing.T) {
 	testCases := []struct {
 		name     string
-		money    *pb.Money
-		cardInfo *pb.CardInfo
-		verifyFn func(t *testing.T, resp *pb.ChargeResponse, err error)
+		money    *modelsv1.Money
+		cardInfo *modelsv1.CardInfo
+		verifyFn func(t *testing.T, resp *paymentv1.ChargeResponse, err error)
 	}{
 		{
 			name: "OK",
-			money: &pb.Money{
+			money: &modelsv1.Money{
 				CurrencyCode: "EUR",
 				Amount:       100,
 			},
-			cardInfo: &pb.CardInfo{
+			cardInfo: &modelsv1.CardInfo{
 				Number:          "4242424242424242",
 				Cvv:             100,
 				ExpirationYear:  int32(time.Now().Year() + 1),
 				ExpirationMonth: int32(time.Now().Month()),
 			},
-			verifyFn: func(t *testing.T, resp *pb.ChargeResponse, err error) {
+			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.NoError(t, err)
 				assert.NotEmpty(t, resp.TransactionId)
 			},
 		},
 		{
 			name: "invalid amount",
-			money: &pb.Money{
+			money: &modelsv1.Money{
 				CurrencyCode: "EUR",
 				Amount:       -100,
 			},
-			cardInfo: &pb.CardInfo{
+			cardInfo: &modelsv1.CardInfo{
 				Number:          "4242424242424242",
 				Cvv:             100,
 				ExpirationYear:  int32(time.Now().Year() + 1),
 				ExpirationMonth: int32(time.Now().Month()),
 			},
-			verifyFn: func(t *testing.T, resp *pb.ChargeResponse, err error) {
+			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)
 				assert.ErrorContains(t, err, "amount")
 			},
 		},
 		{
 			name: "invalid card number",
-			money: &pb.Money{
+			money: &modelsv1.Money{
 				CurrencyCode: "EUR",
 				Amount:       100,
 			},
-			cardInfo: &pb.CardInfo{
+			cardInfo: &modelsv1.CardInfo{
 				Number:          "000000000000000",
 				Cvv:             100,
 				ExpirationYear:  int32(time.Now().Year() + 1),
 				ExpirationMonth: int32(time.Now().Month()),
 			},
-			verifyFn: func(t *testing.T, resp *pb.ChargeResponse, err error) {
+			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)
 				assert.ErrorContains(t, err, codes.InvalidArgument.String())
 			},
 		},
 		{
 			name: "invalid method",
-			money: &pb.Money{
+			money: &modelsv1.Money{
 				CurrencyCode: "EUR",
 				Amount:       100,
 			},
-			cardInfo: &pb.CardInfo{
+			cardInfo: &modelsv1.CardInfo{
 				Number:          "378282246310005", // American Express (https://stripe.com/docs/testing)
 				Cvv:             100,
 				ExpirationYear:  int32(time.Now().Year() + 1),
 				ExpirationMonth: int32(time.Now().Month()),
 			},
-			verifyFn: func(t *testing.T, resp *pb.ChargeResponse, err error) {
+			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)
 				assert.ErrorContains(t, err, codes.InvalidArgument.String())
 			},
 		},
 		{
 			name: "lack of cvv",
-			money: &pb.Money{
+			money: &modelsv1.Money{
 				CurrencyCode: "EUR",
 				Amount:       100,
 			},
-			cardInfo: &pb.CardInfo{
+			cardInfo: &modelsv1.CardInfo{
 				Number:          "4242424242424242",
 				ExpirationYear:  int32(time.Now().Year() + 1),
 				ExpirationMonth: int32(time.Now().Month()),
 			},
-			verifyFn: func(t *testing.T, resp *pb.ChargeResponse, err error) {
+			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)
 				assert.ErrorContains(t, err, codes.InvalidArgument.String())
 			},
@@ -121,7 +122,7 @@ func TestChargeHandler(t *testing.T) {
 				Port:                 "5000",
 			}
 			svr := NewServer(config)
-			pb.RegisterPaymentServer(grpcServer, svr)
+			paymentv1.RegisterPaymentServiceServer(grpcServer, svr)
 
 			lis := bufconn.Listen(1024 * 1024)
 			t.Cleanup(func() {
@@ -154,10 +155,10 @@ func TestChargeHandler(t *testing.T) {
 			})
 			assert.NoError(t, err)
 
-			client := pb.NewPaymentClient(conn)
+			client := paymentv1.NewPaymentServiceClient(conn)
 
 			// make a request
-			resp, err := client.Charge(ctx, &pb.ChargeRequest{
+			resp, err := client.Charge(ctx, &paymentv1.ChargeRequest{
 				Money:    test.money,
 				CardInfo: test.cardInfo,
 			})

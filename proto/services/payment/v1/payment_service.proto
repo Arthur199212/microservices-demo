@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package services.payment.v1;
+
+import "models/v1/card_info.proto";
+import "models/v1/money.proto";
+
+service PaymentService {
+  rpc Charge (ChargeRequest) returns (ChargeResponse) {}
+}
+
+message ChargeRequest {
+  models.v1.Money money = 1;
+  models.v1.CardInfo cardInfo = 2;
+}
+
+message ChargeResponse {
+  string transactionId = 1;
+}

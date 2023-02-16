@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package services.products.v1;
+
+import "services/products/v1/product.proto";
+
+message GetProductRequest {
+  int64 id = 1;
+}
+
+message GetProductResponse {
+  Product product = 1;
+}

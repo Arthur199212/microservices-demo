@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package services.currency.v1;
+
+import "google/protobuf/empty.proto";
+import "models/v1/money.proto";
+import "services/currency/v1/rpc_convert.proto";
+import "services/currency/v1/rpc_get_supported_currencies.proto";
+
+service CurrencyService {
+  rpc Convert (ConvertRequest) returns (models.v1.Money) {}
+  rpc GetSupportedCurrencies (google.protobuf.Empty) returns (GetSupportedCurrenciesResponse) {}
+}

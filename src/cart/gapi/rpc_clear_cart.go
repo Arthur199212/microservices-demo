@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/Arthur199212/microservices-demo/src/cart/pb"
+	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -12,7 +12,7 @@ import (
 
 func (s *Server) ClearCart(
 	ctx context.Context,
-	req *pb.ClearCartRequest,
+	req *cartv1.ClearCartRequest,
 ) (*emptypb.Empty, error) {
 	emptyResp := &emptypb.Empty{}
 

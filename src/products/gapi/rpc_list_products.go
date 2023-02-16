@@ -3,8 +3,8 @@ package gapi
 import (
 	"context"
 
+	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	"github.com/Arthur199212/microservices-demo/src/products/db"
-	"github.com/Arthur199212/microservices-demo/src/products/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -15,8 +15,8 @@ const (
 
 func (s *Server) ListProducts(
 	ctx context.Context,
-	req *pb.ListProductsRequest,
-) (*pb.ListProductsResponse, error) {
+	req *productsv1.ListProductsRequest,
+) (*productsv1.ListProductsResponse, error) {
 	page := req.GetPage()
 	pageSize := req.GetPageSize()
 
@@ -39,13 +39,13 @@ func (s *Server) ListProducts(
 		)
 	}
 
-	return &pb.ListProductsResponse{
+	return &productsv1.ListProductsResponse{
 		Products: convertProductsList(products),
 	}, nil
 }
 
-func convertProductsList(products []db.Product) []*pb.Product {
-	pl := make([]*pb.Product, len(products))
+func convertProductsList(products []db.Product) []*productsv1.Product {
+	pl := make([]*productsv1.Product, len(products))
 
 	for i, product := range products {
 		pl[i] = convertProduct(product)

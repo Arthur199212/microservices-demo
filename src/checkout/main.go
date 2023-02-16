@@ -7,14 +7,14 @@ import (
 	"os"
 	"time"
 
-	cart "github.com/Arthur199212/microservices-demo/src/cart/pb"
+	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
+	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
+	currencyv1 "github.com/Arthur199212/microservices-demo/gen/services/currency/v1"
+	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
+	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	"github.com/Arthur199212/microservices-demo/src/checkout/checkout"
 	"github.com/Arthur199212/microservices-demo/src/checkout/gapi"
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
-	currency "github.com/Arthur199212/microservices-demo/src/currency/pb"
-	payment "github.com/Arthur199212/microservices-demo/src/payment/pb"
-	products "github.com/Arthur199212/microservices-demo/src/products/pb"
-	shipping "github.com/Arthur199212/microservices-demo/src/shipping/pb"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -39,23 +39,23 @@ func main() {
 
 	cartConn := dialGrpcClient(cartServiceAddr)
 	defer cartConn.Close()
-	cartClient := cart.NewCartClient(cartConn)
+	cartClient := cartv1.NewCartServiceClient(cartConn)
 
 	currencyConn := dialGrpcClient(currencyServiceAddr)
 	defer currencyConn.Close()
-	currencyClient := currency.NewCurrencyClient(currencyConn)
+	currencyClient := currencyv1.NewCurrencyServiceClient(currencyConn)
 
 	paymentConn := dialGrpcClient(paymentServiceAddr)
 	defer paymentConn.Close()
-	paymentClient := payment.NewPaymentClient(paymentConn)
+	paymentClient := paymentv1.NewPaymentServiceClient(paymentConn)
 
 	productsConn := dialGrpcClient(productsServiceAddr)
 	defer productsConn.Close()
-	productsClient := products.NewProductsClient(productsConn)
+	productsClient := productsv1.NewProductsServiceClient(productsConn)
 
 	shippingConn := dialGrpcClient(shippingServiceAddr)
 	defer shippingConn.Close()
-	shippingClient := shipping.NewShippingClient(shippingConn)
+	shippingClient := shippingv1.NewShippingServiceClient(shippingConn)
 
 	checkoutService := checkout.NewCheckoutService(
 		cartClient,
@@ -66,7 +66,7 @@ func main() {
 	)
 	srv := gapi.NewServer(checkoutService)
 	grpcServer := grpc.NewServer()
-	pb.RegisterCheckoutServer(grpcServer, srv)
+	checkoutv1.RegisterCheckoutServiceServer(grpcServer, srv)
 
 	// to provide self-documentation
 	reflection.Register(grpcServer)

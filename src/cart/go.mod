@@ -3,6 +3,7 @@ module github.com/Arthur199212/microservices-demo/src/cart
 go 1.20
 
 require (
+	github.com/Arthur199212/microservices-demo v0.0.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.1
 	google.golang.org/grpc v1.52.3
@@ -21,3 +22,5 @@ require (
 	google.golang.org/genproto v0.0.0-20230127162408-596548ed4efa // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/Arthur199212/microservices-demo v0.0.0 => ../../

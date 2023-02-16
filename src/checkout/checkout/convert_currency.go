@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
-	currency "github.com/Arthur199212/microservices-demo/src/currency/pb"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	currencyv1 "github.com/Arthur199212/microservices-demo/gen/services/currency/v1"
 	"github.com/rs/zerolog/log"
 )
 
@@ -14,16 +14,16 @@ func (s *checkoutService) convertCurrency(
 	fromCurrencyCode string,
 	toCurrencyCode string,
 	amount float32,
-) (*pb.Money, error) {
+) (*modelsv1.Money, error) {
 	if fromCurrencyCode == toCurrencyCode {
-		return &pb.Money{
+		return &modelsv1.Money{
 			Amount:       amount,
 			CurrencyCode: toCurrencyCode,
 		}, nil
 	}
 
-	resp, err := s.currencyClient.Convert(ctx, &currency.ConvertRequest{
-		From: &currency.Money{
+	resp, err := s.currencyClient.Convert(ctx, &currencyv1.ConvertRequest{
+		From: &modelsv1.Money{
 			CurrencyCode: fromCurrencyCode,
 			Amount:       amount,
 		},
@@ -35,7 +35,7 @@ func (s *checkoutService) convertCurrency(
 			Msgf(errMsg.Error())
 		return nil, errMsg
 	}
-	return &pb.Money{
+	return &modelsv1.Money{
 		CurrencyCode: resp.GetCurrencyCode(),
 		Amount:       resp.GetAmount(),
 	}, nil

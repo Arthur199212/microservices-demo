@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package services.checkout.v1;
+
+import "models/v1/address.proto";
+import "models/v1/money.proto";
+
+message Shipping {
+  models.v1.Money cost = 2;
+  models.v1.Address address = 3;
+}

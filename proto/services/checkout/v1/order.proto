@@ -1,0 +1,13 @@
+
+syntax = "proto3";
+
+package services.checkout.v1;
+
+import "services/checkout/v1/order_item.proto";
+import "services/checkout/v1/shipping.proto";
+
+message Order {
+  string transactionId = 1;
+  Shipping shipping = 2;
+  repeated OrderItem items = 3;
+}

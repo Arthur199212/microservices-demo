@@ -1,7 +1,7 @@
 package gapi
 
 import (
-	"github.com/Arthur199212/microservices-demo/src/shipping/pb"
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	"github.com/Arthur199212/microservices-demo/src/shipping/shipping"
 	"github.com/go-playground/validator/v10"
 )
@@ -11,7 +11,7 @@ const (
 )
 
 type Server struct {
-	pb.UnimplementedShippingServer
+	shippingv1.UnimplementedShippingServiceServer
 	validate *validator.Validate
 	shipping shipping.ShippingService
 }

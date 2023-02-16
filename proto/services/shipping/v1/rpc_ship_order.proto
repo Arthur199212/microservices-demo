@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package services.shipping.v1;
+
+import "models/v1/address.proto";
+import "models/v1/product.proto";
+
+message ShipOrderRequest {
+  models.v1.Address address = 1;
+  repeated models.v1.Product products = 2;
+}
+
+message ShipOrderResponse {
+  string trackingId = 1;
+}

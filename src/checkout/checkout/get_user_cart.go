@@ -4,13 +4,16 @@ import (
 	"context"
 	"fmt"
 
-	cart "github.com/Arthur199212/microservices-demo/src/cart/pb"
-	"github.com/Arthur199212/microservices-demo/src/checkout/pb"
+	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
+	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	"github.com/rs/zerolog/log"
 )
 
-func (s *checkoutService) getCartProducts(ctx context.Context, sessionId string) ([]*pb.Product, error) {
-	cartResp, err := s.cartClient.GetCart(ctx, &cart.GetCartRequest{
+func (s *checkoutService) getCartProducts(
+	ctx context.Context,
+	sessionId string,
+) ([]*modelsv1.Product, error) {
+	cartResp, err := s.cartClient.GetCart(ctx, &cartv1.GetCartRequest{
 		SessionId: sessionId,
 	})
 	if err != nil {
@@ -20,9 +23,9 @@ func (s *checkoutService) getCartProducts(ctx context.Context, sessionId string)
 		return nil, errMsg
 	}
 
-	products := make([]*pb.Product, len(cartResp.GetProducts()))
+	products := make([]*modelsv1.Product, len(cartResp.GetProducts()))
 	for i, p := range cartResp.Products {
-		products[i] = &pb.Product{
+		products[i] = &modelsv1.Product{
 			Id:       p.GetId(),
 			Quantity: p.GetQuantity(),
 		}

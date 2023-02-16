@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package models.v1;
+
+message CardInfo {
+  int32 cvv = 1;
+  int32 expirationMonth = 2;
+  int32 expirationYear = 3;
+  string number = 4;
+}

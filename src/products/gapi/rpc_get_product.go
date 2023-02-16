@@ -4,16 +4,16 @@ import (
 	"context"
 	"database/sql"
 
+	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	"github.com/Arthur199212/microservices-demo/src/products/db"
-	"github.com/Arthur199212/microservices-demo/src/products/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 func (s *Server) GetProduct(
 	ctx context.Context,
-	req *pb.GetProductRequest,
-) (*pb.GetProductResponse, error) {
+	req *productsv1.GetProductRequest,
+) (*productsv1.GetProductResponse, error) {
 	id := req.GetId()
 	if id < 1 {
 		return nil, status.Errorf(
@@ -39,13 +39,13 @@ func (s *Server) GetProduct(
 		)
 	}
 
-	return &pb.GetProductResponse{
+	return &productsv1.GetProductResponse{
 		Product: convertProduct(product),
 	}, nil
 }
 
-func convertProduct(product db.Product) *pb.Product {
-	return &pb.Product{
+func convertProduct(product db.Product) *productsv1.Product {
+	return &productsv1.Product{
 		Id:          product.ID,
 		Name:        product.Name,
 		Description: product.Description,
