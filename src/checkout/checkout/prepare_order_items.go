@@ -25,18 +25,18 @@ func (s *checkoutService) prepareOrderItems(
 			Id: product.Id,
 		})
 		if err != nil {
-			errMsg := fmt.Errorf("cannot get product with ID=%d: %+v", product.Id, err)
+			err = fmt.Errorf("cannot get product with ID=%d: %+v", product.Id, err)
 			log.Error().Err(err).
-				Msgf(errMsg.Error())
-			return nil, errMsg
+				Msgf(err.Error())
+			return nil, err
 		}
 
 		money, err := s.convertCurrency(ctx, defaultCurrency, userCurrency, resp.Product.Price)
 		if err != nil {
-			errMsg := fmt.Errorf("failed to convert currency for product with ID=%d: %+v", product.Id, err)
+			err = fmt.Errorf("failed to convert currency for product with ID=%d: %+v", product.Id, err)
 			log.Error().Err(err).
-				Msgf(errMsg.Error())
-			return nil, errMsg
+				Msgf(err.Error())
+			return nil, err
 		}
 
 		orderItems[i] = &checkoutv1.OrderItem{

@@ -27,9 +27,9 @@ func (s *checkoutService) chargeCard(
 		},
 	})
 	if err != nil {
-		errMsg := fmt.Errorf("cannot charge card: %+v", err)
-		log.Error().Err(errMsg)
-		return "", errMsg
+		err = fmt.Errorf("cannot charge card: %+v", err)
+		log.Error().Err(err)
+		return "", err
 	}
 	return resp.GetTransactionId(), nil
 }

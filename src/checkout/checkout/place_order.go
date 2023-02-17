@@ -17,9 +17,9 @@ type Address struct {
 }
 
 type CardInfo struct {
-	Cvv             int32  `validate:"required,numeric,min=3,max=4"`
-	ExpirationMonth int32  `validate:"required,numeric,len=2"`
-	ExpirationYear  int32  `validate:"required,numeric,len=2"`
+	Cvv             string `validate:"required,numeric,min=3,max=4"`
+	ExpirationMonth string `validate:"required,numeric,min=1,max=2"`
+	ExpirationYear  string `validate:"required,numeric,len=4"`
 	Number          string `validate:"required,numeric,min=8,max=19"`
 }
 

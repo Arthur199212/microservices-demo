@@ -30,10 +30,10 @@ func (s *checkoutService) convertCurrency(
 		ToCurrencyCode: toCurrencyCode,
 	})
 	if err != nil {
-		errMsg := fmt.Errorf("cannot convert currency: %+v", err)
+		err = fmt.Errorf("cannot convert currency: %+v", err)
 		log.Error().Err(err).
-			Msgf(errMsg.Error())
-		return nil, errMsg
+			Msgf(err.Error())
+		return nil, err
 	}
 
 	return resp.GetMoney(), nil

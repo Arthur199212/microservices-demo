@@ -2,7 +2,6 @@ package gapi
 
 import (
 	"context"
-	"strconv"
 
 	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
 	creditcard "github.com/durango/go-credit-card"
@@ -23,9 +22,9 @@ func (s *Server) Charge(
 	cardInfo := req.GetCardInfo()
 	card := creditcard.Card{
 		Number: cardInfo.GetNumber(),
-		Cvv:    strconv.Itoa(int(cardInfo.GetCvv())),
-		Month:  strconv.Itoa(int(cardInfo.GetExpirationMonth())),
-		Year:   strconv.Itoa(int(cardInfo.GetExpirationYear())),
+		Cvv:    cardInfo.GetCvv(),
+		Month:  cardInfo.GetExpirationMonth(),
+		Year:   cardInfo.GetExpirationYear(),
 	}
 	if err := card.Validate(s.config.AllowTestCardNumbers); err != nil {
 		return &paymentv1.ChargeResponse{}, status.Errorf(codes.InvalidArgument, err.Error())

@@ -35,16 +35,16 @@ func (s *checkoutService) quoteShipping(
 		Products: products,
 	})
 	if err != nil {
-		errMsg := fmt.Errorf("cannot quote shipping: %+v", err)
-		log.Error().Err(errMsg)
-		return nil, errMsg
+		err = fmt.Errorf("cannot quote shipping: %+v", err)
+		log.Error().Err(err)
+		return nil, err
 	}
 
 	money, err := s.convertCurrency(ctx, defaultCurrency, userCurrency, resp.GetQuote())
 	if err != nil {
-		errMsg := fmt.Errorf("cannot conver currency for quote shipping: %+v", err)
-		log.Error().Err(errMsg)
-		return nil, errMsg
+		err = fmt.Errorf("cannot conver currency for quote shipping: %+v", err)
+		log.Error().Err(err)
+		return nil, err
 	}
 	return money, nil
 }

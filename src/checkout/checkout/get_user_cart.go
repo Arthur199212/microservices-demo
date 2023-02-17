@@ -17,10 +17,10 @@ func (s *checkoutService) getCartProducts(
 		SessionId: sessionId,
 	})
 	if err != nil {
-		errMsg := fmt.Errorf("cannot retrieve cart with sessionId=%s: %+v", sessionId, err)
+		err = fmt.Errorf("cannot retrieve cart with sessionId=%s: %+v", sessionId, err)
 		log.Error().Err(err).
-			Msgf(errMsg.Error())
-		return nil, errMsg
+			Msgf(err.Error())
+		return nil, err
 	}
 
 	products := make([]*modelsv1.Product, len(cartResp.GetProducts()))

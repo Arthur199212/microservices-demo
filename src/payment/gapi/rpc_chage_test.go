@@ -3,6 +3,7 @@ package gapi
 import (
 	"context"
 	"net"
+	"strconv"
 	"testing"
 	"time"
 
@@ -31,9 +32,9 @@ func TestChargeHandler(t *testing.T) {
 			},
 			cardInfo: &modelsv1.CardInfo{
 				Number:          "4242424242424242",
-				Cvv:             100,
-				ExpirationYear:  int32(time.Now().Year() + 1),
-				ExpirationMonth: int32(time.Now().Month()),
+				Cvv:             "100",
+				ExpirationYear:  strconv.Itoa(time.Now().Year() + 1),
+				ExpirationMonth: strconv.Itoa(int(time.Now().Month())),
 			},
 			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.NoError(t, err)
@@ -48,9 +49,9 @@ func TestChargeHandler(t *testing.T) {
 			},
 			cardInfo: &modelsv1.CardInfo{
 				Number:          "4242424242424242",
-				Cvv:             100,
-				ExpirationYear:  int32(time.Now().Year() + 1),
-				ExpirationMonth: int32(time.Now().Month()),
+				Cvv:             "100",
+				ExpirationYear:  strconv.Itoa(time.Now().Year() + 1),
+				ExpirationMonth: strconv.Itoa(int(time.Now().Month())),
 			},
 			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)
@@ -65,9 +66,9 @@ func TestChargeHandler(t *testing.T) {
 			},
 			cardInfo: &modelsv1.CardInfo{
 				Number:          "000000000000000",
-				Cvv:             100,
-				ExpirationYear:  int32(time.Now().Year() + 1),
-				ExpirationMonth: int32(time.Now().Month()),
+				Cvv:             "100",
+				ExpirationYear:  strconv.Itoa(time.Now().Year() + 1),
+				ExpirationMonth: strconv.Itoa(int(time.Now().Month())),
 			},
 			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)
@@ -82,9 +83,9 @@ func TestChargeHandler(t *testing.T) {
 			},
 			cardInfo: &modelsv1.CardInfo{
 				Number:          "378282246310005", // American Express (https://stripe.com/docs/testing)
-				Cvv:             100,
-				ExpirationYear:  int32(time.Now().Year() + 1),
-				ExpirationMonth: int32(time.Now().Month()),
+				Cvv:             "100",
+				ExpirationYear:  strconv.Itoa(time.Now().Year() + 1),
+				ExpirationMonth: strconv.Itoa(int(time.Now().Month())),
 			},
 			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)
@@ -99,8 +100,8 @@ func TestChargeHandler(t *testing.T) {
 			},
 			cardInfo: &modelsv1.CardInfo{
 				Number:          "4242424242424242",
-				ExpirationYear:  int32(time.Now().Year() + 1),
-				ExpirationMonth: int32(time.Now().Month()),
+				ExpirationYear:  strconv.Itoa(time.Now().Year() + 1),
+				ExpirationMonth: strconv.Itoa(int(time.Now().Month())),
 			},
 			verifyFn: func(t *testing.T, resp *paymentv1.ChargeResponse, err error) {
 				assert.Error(t, err)

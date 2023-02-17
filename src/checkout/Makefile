@@ -20,3 +20,12 @@ evans:
 .PHONY: test
 test:
 	go test -v ./... -race -cover
+
+.PHONY: mockgen
+mockgen:
+	rm -f mock/*.go
+	mockgen github.com/Arthur199212/microservices-demo/gen/services/cart/v1 CartServiceClient > mock/cart_service_mock.go
+	mockgen github.com/Arthur199212/microservices-demo/gen/services/currency/v1 CurrencyServiceClient > mock/currency_service_mock.go
+	mockgen github.com/Arthur199212/microservices-demo/gen/services/payment/v1 PaymentServiceClient > mock/payment_service_mock.go
+	mockgen github.com/Arthur199212/microservices-demo/gen/services/products/v1 ProductsServiceClient > mock/products_service_mock.go
+	mockgen github.com/Arthur199212/microservices-demo/gen/services/shipping/v1 ShippingServiceClient > mock/shipping_service_mock.go
