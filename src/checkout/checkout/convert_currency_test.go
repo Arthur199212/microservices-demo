@@ -12,8 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ExportConvertCurrency = (*checkoutService).convertCurrency
-
 func TestConvertCurrency(t *testing.T) {
 	fromMoney := &modelsv1.Money{
 		Amount:       100.29,
@@ -107,7 +105,8 @@ func TestConvertCurrency(t *testing.T) {
 
 			test.setupMock(currencyService)
 
-			res, err := ExportConvertCurrency(
+			convertCurrency := (*checkoutService).convertCurrency
+			res, err := convertCurrency(
 				s.(*checkoutService),
 				context.Background(),
 				test.money,

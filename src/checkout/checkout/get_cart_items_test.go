@@ -12,8 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ExportGetCartItems = (*checkoutService).getCartItems
-
 func TestGetCartItems(t *testing.T) {
 	sessionId := "mock session id"
 	products := []*modelsv1.Product{
@@ -94,7 +92,8 @@ func TestGetCartItems(t *testing.T) {
 
 			test.setupMock(cartService)
 
-			res, err := ExportGetCartItems(
+			getCartItems := (*checkoutService).getCartItems
+			res, err := getCartItems(
 				s.(*checkoutService),
 				context.Background(),
 				sessionId,

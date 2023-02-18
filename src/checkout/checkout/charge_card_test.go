@@ -12,7 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ExportChargeCard = (*checkoutService).chargeCard
 
 func TestCargeCard(t *testing.T) {
 	cardInfo := CardInfo{
@@ -108,7 +107,8 @@ func TestCargeCard(t *testing.T) {
 
 			test.setupMock(paymentService)
 
-			transactionId, err := ExportChargeCard(s.(*checkoutService), context.Background(), cardInfo, money)
+			chargeCard := (*checkoutService).chargeCard
+			transactionId, err := chargeCard(s.(*checkoutService), context.Background(), cardInfo, money)
 
 			test.verify(t, transactionId, err)
 		})

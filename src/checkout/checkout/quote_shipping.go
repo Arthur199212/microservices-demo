@@ -12,11 +12,11 @@ import (
 func (s *checkoutService) quoteShipping(
 	ctx context.Context,
 	address Address,
-	cartProducts []*modelsv1.Product,
+	cartItems []*modelsv1.Product,
 	userCurrency string,
 ) (*modelsv1.Money, error) {
-	products := make([]*modelsv1.Product, len(cartProducts))
-	for i, p := range cartProducts {
+	products := make([]*modelsv1.Product, len(cartItems))
+	for i, p := range cartItems {
 		products[i] = &modelsv1.Product{
 			Id:       p.Id,
 			Quantity: p.Quantity,
@@ -35,7 +35,7 @@ func (s *checkoutService) quoteShipping(
 		Products: products,
 	})
 	if err != nil {
-		err = fmt.Errorf("cannot quote shipping: %+v", err)
+		err = fmt.Errorf("cannot shipping quote: %+v", err)
 		log.Error().Err(err)
 		return nil, err
 	}
