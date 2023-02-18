@@ -7,7 +7,7 @@ import (
 
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
-	mock_v1 "github.com/Arthur199212/microservices-demo/src/checkout/mock"
+	mock_v1 "github.com/Arthur199212/microservices-demo/src/checkout/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )

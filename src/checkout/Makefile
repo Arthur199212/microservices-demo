@@ -24,14 +24,14 @@ test:
 .PHONY: mockgen
 mockgen:
 	@echo "deleting mocks..."
-	@rm -f mock/*.go
-	@rm -f checkout/mock/*.go
+	@rm -f mocks/*.go
+	@rm -f checkout/mocks/*.go
 	@echo "mocking grpc clients..."
-	@mockgen github.com/Arthur199212/microservices-demo/gen/services/cart/v1 CartServiceClient > mock/cart_service_mock.go
-	@mockgen github.com/Arthur199212/microservices-demo/gen/services/currency/v1 CurrencyServiceClient > mock/currency_service_mock.go
-	@mockgen github.com/Arthur199212/microservices-demo/gen/services/payment/v1 PaymentServiceClient > mock/payment_service_mock.go
-	@mockgen github.com/Arthur199212/microservices-demo/gen/services/products/v1 ProductsServiceClient > mock/products_service_mock.go
-	@mockgen github.com/Arthur199212/microservices-demo/gen/services/shipping/v1 ShippingServiceClient > mock/shipping_service_mock.go
+	@mockgen github.com/Arthur199212/microservices-demo/gen/services/cart/v1 CartServiceClient > mocks/cart_service_mock.go
+	@mockgen github.com/Arthur199212/microservices-demo/gen/services/currency/v1 CurrencyServiceClient > mocks/currency_service_mock.go
+	@mockgen github.com/Arthur199212/microservices-demo/gen/services/payment/v1 PaymentServiceClient > mocks/payment_service_mock.go
+	@mockgen github.com/Arthur199212/microservices-demo/gen/services/products/v1 ProductsServiceClient > mocks/products_service_mock.go
+	@mockgen github.com/Arthur199212/microservices-demo/gen/services/shipping/v1 ShippingServiceClient > mocks/shipping_service_mock.go
 	@echo "mocking checkout service..."
-	@mockgen github.com/Arthur199212/microservices-demo/src/checkout/checkout CheckoutService > checkout/mock/checkout_service_mock.go
+	@mockgen github.com/Arthur199212/microservices-demo/src/checkout/checkout CheckoutService > checkout/mocks/checkout_service_mock.go
 	@echo "done"

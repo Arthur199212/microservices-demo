@@ -9,7 +9,7 @@ import (
 
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
-	mock_checkout "github.com/Arthur199212/microservices-demo/src/checkout/checkout/mock"
+	mock_checkout "github.com/Arthur199212/microservices-demo/src/checkout/checkout/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/net/context"
