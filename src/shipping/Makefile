@@ -20,3 +20,8 @@ evans:
 .PHONY: test
 test:
 	go test -v ./... -race -cover
+
+.PHONY: mockgen
+mockgen:
+	rm -f shipping/mocks/*.go
+	mockgen github.com/Arthur199212/microservices-demo/src/shipping/shipping ShippingService > shipping/mocks/shipping_service_mock.go

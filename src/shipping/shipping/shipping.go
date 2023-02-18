@@ -4,8 +4,6 @@ import (
 	"github.com/google/uuid"
 )
 
-//go:generate mockgen -source=shipping.go -destination=mocks/mock.go
-
 type ShippingService interface {
 	GetQuote(address Address, products []Product) (Quote, error)
 	ShipOrder(address Address, products []Product) (string, error)
