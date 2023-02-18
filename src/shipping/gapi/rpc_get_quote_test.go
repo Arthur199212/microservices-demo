@@ -278,10 +278,10 @@ func TestGetQuote(t *testing.T) {
 				grpc.WithContextDialer(dialer),
 				grpc.WithTransportCredentials(insecure.NewCredentials()),
 			)
+			assert.NoError(t, err)
 			t.Cleanup(func() {
 				conn.Close()
 			})
-			assert.NoError(t, err)
 
 			client := shippingv1.NewShippingServiceClient(conn)
 
