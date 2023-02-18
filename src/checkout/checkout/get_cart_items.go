@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (s *checkoutService) getCartProducts(
+func (s *checkoutService) getCartItems(
 	ctx context.Context,
 	sessionId string,
 ) ([]*modelsv1.Product, error) {
@@ -23,12 +23,12 @@ func (s *checkoutService) getCartProducts(
 		return nil, err
 	}
 
-	products := make([]*modelsv1.Product, len(cartResp.GetProducts()))
+	items := make([]*modelsv1.Product, len(cartResp.GetProducts()))
 	for i, p := range cartResp.Products {
-		products[i] = &modelsv1.Product{
+		items[i] = &modelsv1.Product{
 			Id:       p.GetId(),
 			Quantity: p.GetQuantity(),
 		}
 	}
-	return products, nil
+	return items, nil
 }
