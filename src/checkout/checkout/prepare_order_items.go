@@ -31,7 +31,11 @@ func (s *checkoutService) prepareOrderItems(
 			return nil, err
 		}
 
-		money, err := s.convertCurrency(ctx, defaultCurrency, userCurrency, resp.Product.Price)
+		productPrice := &modelsv1.Money{
+			Amount: resp.Product.Price,
+			CurrencyCode: defaultCurrency,
+		}
+		money, err := s.convertCurrency(ctx, productPrice, userCurrency)
 		if err != nil {
 			err = fmt.Errorf("failed to convert currency for product with ID=%d: %+v", product.Id, err)
 			log.Error().Err(err).

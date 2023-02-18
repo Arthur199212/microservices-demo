@@ -11,22 +11,15 @@ import (
 
 func (s *checkoutService) convertCurrency(
 	ctx context.Context,
-	fromCurrencyCode string,
+	money *modelsv1.Money,
 	toCurrencyCode string,
-	amount float32,
 ) (*modelsv1.Money, error) {
-	if fromCurrencyCode == toCurrencyCode {
-		return &modelsv1.Money{
-			Amount:       amount,
-			CurrencyCode: toCurrencyCode,
-		}, nil
+	if money.CurrencyCode == toCurrencyCode {
+		return money, nil
 	}
 
 	resp, err := s.currencyClient.Convert(ctx, &currencyv1.ConvertRequest{
-		From: &modelsv1.Money{
-			CurrencyCode: fromCurrencyCode,
-			Amount:       amount,
-		},
+		From: money,
 		ToCurrencyCode: toCurrencyCode,
 	})
 	if err != nil {

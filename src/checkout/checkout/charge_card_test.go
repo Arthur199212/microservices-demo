@@ -86,27 +86,31 @@ func TestCargeCard(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
+		t.Run(test.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			t.Cleanup(func() {
+				ctrl.Finish()
+			})
 
-		cartService := mock_v1.NewMockCartServiceClient(ctrl)
-		currencyService := mock_v1.NewMockCurrencyServiceClient(ctrl)
-		paymentService := mock_v1.NewMockPaymentServiceClient(ctrl)
-		protuctsService := mock_v1.NewMockProductsServiceClient(ctrl)
-		shippingService := mock_v1.NewMockShippingServiceClient(ctrl)
+			cartService := mock_v1.NewMockCartServiceClient(ctrl)
+			currencyService := mock_v1.NewMockCurrencyServiceClient(ctrl)
+			paymentService := mock_v1.NewMockPaymentServiceClient(ctrl)
+			protuctsService := mock_v1.NewMockProductsServiceClient(ctrl)
+			shippingService := mock_v1.NewMockShippingServiceClient(ctrl)
 
-		s := NewCheckoutService(
-			cartService,
-			currencyService,
-			paymentService,
-			protuctsService,
-			shippingService,
-		)
+			s := NewCheckoutService(
+				cartService,
+				currencyService,
+				paymentService,
+				protuctsService,
+				shippingService,
+			)
 
-		test.setupMock(paymentService)
+			test.setupMock(paymentService)
 
-		transactionId, err := ExportChargeCard(s.(*checkoutService), context.Background(), cardInfo, money)
+			transactionId, err := ExportChargeCard(s.(*checkoutService), context.Background(), cardInfo, money)
 
-		test.verify(t, transactionId, err)
+			test.verify(t, transactionId, err)
+		})
 	}
 }
