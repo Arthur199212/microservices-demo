@@ -33,12 +33,16 @@ func (s *Server) PlaceOrder(ctx context.Context, req *checkoutv1.PlaceOrderReque
 }
 
 func convertToAddress(address *modelsv1.Address) checkout.Address {
+	var state *string
+	if address.State != "" {
+		state = &address.State
+	}
 	return checkout.Address{
 		StreetAddress: address.StreetAddress,
 		City:          address.City,
 		Country:       address.Country,
 		ZipCode:       address.ZipCode,
-		State:         &address.State,
+		State:         state,
 	}
 }
 

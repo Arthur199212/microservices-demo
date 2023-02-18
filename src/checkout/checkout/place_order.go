@@ -63,6 +63,10 @@ func (s *checkoutService) PlaceOrder(
 		return nil, err
 	}
 
+	state := ""
+	if args.Address.State != nil {
+		state = *args.Address.State
+	}
 	order := &checkoutv1.Order{
 		TransactionId: transactionId,
 		Shipping: &checkoutv1.Shipping{
@@ -70,7 +74,7 @@ func (s *checkoutService) PlaceOrder(
 			Address: &modelsv1.Address{
 				StreetAddress: args.Address.StreetAddress,
 				City:          args.Address.City,
-				State:         *args.Address.State,
+				State:         state,
 				Country:       args.Address.Country,
 				ZipCode:       args.Address.ZipCode,
 			},

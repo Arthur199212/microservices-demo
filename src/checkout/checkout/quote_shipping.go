@@ -22,10 +22,14 @@ func (s *checkoutService) quoteShipping(
 			Quantity: p.Quantity,
 		}
 	}
+	state := ""
+	if address.State != nil {
+		state = *address.State
+	}
 	shippingAddress := &modelsv1.Address{
 		StreetAddress: address.StreetAddress,
 		City:          address.City,
-		State:         *address.State,
+		State:         state,
 		Country:       address.Country,
 		ZipCode:       address.ZipCode,
 	}
