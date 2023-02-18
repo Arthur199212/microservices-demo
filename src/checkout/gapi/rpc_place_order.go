@@ -19,12 +19,12 @@ func (s *Server) PlaceOrder(ctx context.Context, req *checkoutv1.PlaceOrderReque
 		UserCurrency: req.GetUserCurrency(),
 	}
 	if err := s.validate.Struct(args); err != nil {
-		status.Errorf(codes.InvalidArgument, err.Error())
+		return nil, status.Errorf(codes.InvalidArgument, err.Error())
 	}
 
 	order, err := s.checkoutService.PlaceOrder(ctx, args)
 	if err != nil {
-		status.Errorf(codes.Internal, err.Error())
+		return nil, status.Errorf(codes.Internal, err.Error())
 	}
 
 	return &checkoutv1.PlaceOrderResponse{

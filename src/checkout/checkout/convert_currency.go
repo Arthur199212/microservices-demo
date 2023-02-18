@@ -19,7 +19,7 @@ func (s *checkoutService) convertCurrency(
 	}
 
 	resp, err := s.currencyClient.Convert(ctx, &currencyv1.ConvertRequest{
-		From: money,
+		From:           money,
 		ToCurrencyCode: toCurrencyCode,
 	})
 	if err != nil {

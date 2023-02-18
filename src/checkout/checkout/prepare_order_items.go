@@ -16,11 +16,11 @@ const (
 
 func (s *checkoutService) prepareOrderItems(
 	ctx context.Context,
-	cartProducts []*modelsv1.Product,
+	cartItems []*modelsv1.Product,
 	userCurrency string,
 ) ([]*checkoutv1.OrderItem, error) {
-	orderItems := make([]*checkoutv1.OrderItem, len(cartProducts))
-	for i, product := range cartProducts {
+	orderItems := make([]*checkoutv1.OrderItem, len(cartItems))
+	for i, product := range cartItems {
 		resp, err := s.productsClient.GetProduct(ctx, &productsv1.GetProductRequest{
 			Id: product.Id,
 		})
@@ -32,7 +32,7 @@ func (s *checkoutService) prepareOrderItems(
 		}
 
 		productPrice := &modelsv1.Money{
-			Amount: resp.Product.Price,
+			Amount:       resp.Product.Price,
 			CurrencyCode: defaultCurrency,
 		}
 		money, err := s.convertCurrency(ctx, productPrice, userCurrency)

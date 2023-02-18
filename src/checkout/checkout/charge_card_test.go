@@ -12,7 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-
 func TestCargeCard(t *testing.T) {
 	cardInfo := CardInfo{
 		Cvv:             "0123",
@@ -91,21 +90,21 @@ func TestCargeCard(t *testing.T) {
 				ctrl.Finish()
 			})
 
-			cartService := mock_v1.NewMockCartServiceClient(ctrl)
-			currencyService := mock_v1.NewMockCurrencyServiceClient(ctrl)
-			paymentService := mock_v1.NewMockPaymentServiceClient(ctrl)
-			protuctsService := mock_v1.NewMockProductsServiceClient(ctrl)
-			shippingService := mock_v1.NewMockShippingServiceClient(ctrl)
+			cartClient := mock_v1.NewMockCartServiceClient(ctrl)
+			currencyClient := mock_v1.NewMockCurrencyServiceClient(ctrl)
+			paymentClient := mock_v1.NewMockPaymentServiceClient(ctrl)
+			productsClient := mock_v1.NewMockProductsServiceClient(ctrl)
+			shippingClient := mock_v1.NewMockShippingServiceClient(ctrl)
 
 			s := NewCheckoutService(
-				cartService,
-				currencyService,
-				paymentService,
-				protuctsService,
-				shippingService,
+				cartClient,
+				currencyClient,
+				paymentClient,
+				productsClient,
+				shippingClient,
 			)
 
-			test.setupMock(paymentService)
+			test.setupMock(paymentClient)
 
 			chargeCard := (*checkoutService).chargeCard
 			transactionId, err := chargeCard(s.(*checkoutService), context.Background(), cardInfo, money)

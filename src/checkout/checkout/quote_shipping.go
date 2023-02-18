@@ -41,9 +41,9 @@ func (s *checkoutService) quoteShipping(
 	}
 
 	quote := &modelsv1.Money{
-		Amount: resp.GetQuote(),
+		Amount:       resp.GetQuote(),
 		CurrencyCode: defaultCurrency,
-	} 
+	}
 	money, err := s.convertCurrency(ctx, quote, userCurrency)
 	if err != nil {
 		err = fmt.Errorf("cannot conver currency for quote shipping: %+v", err)

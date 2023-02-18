@@ -35,17 +35,17 @@ func (s *checkoutService) PlaceOrder(
 	ctx context.Context,
 	args PlaceOrderArgs,
 ) (*checkoutv1.Order, error) {
-	products, err := s.getCartProducts(ctx, args.SessionId)
+	items, err := s.getCartItems(ctx, args.SessionId)
 	if err != nil {
 		return nil, fmt.Errorf("cart failure: %+v", err)
 	}
 
-	orderItems, err := s.prepareOrderItems(ctx, products, args.UserCurrency)
+	orderItems, err := s.prepareOrderItems(ctx, items, args.UserCurrency)
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare order items: %+v", err)
 	}
 
-	shippingCost, err := s.quoteShipping(ctx, args.Address, products, args.UserCurrency)
+	shippingCost, err := s.quoteShipping(ctx, args.Address, items, args.UserCurrency)
 	if err != nil {
 		return nil, err
 	}

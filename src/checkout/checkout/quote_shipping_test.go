@@ -108,21 +108,21 @@ func TestQuoteShipping(t *testing.T) {
 				ctrl.Finish()
 			})
 
-			cartService := mock_v1.NewMockCartServiceClient(ctrl)
-			currencyService := mock_v1.NewMockCurrencyServiceClient(ctrl)
-			paymentService := mock_v1.NewMockPaymentServiceClient(ctrl)
-			protuctsService := mock_v1.NewMockProductsServiceClient(ctrl)
-			shippingService := mock_v1.NewMockShippingServiceClient(ctrl)
+			cartClient := mock_v1.NewMockCartServiceClient(ctrl)
+			currencyClient := mock_v1.NewMockCurrencyServiceClient(ctrl)
+			paymentClient := mock_v1.NewMockPaymentServiceClient(ctrl)
+			productsClient := mock_v1.NewMockProductsServiceClient(ctrl)
+			shippingClient := mock_v1.NewMockShippingServiceClient(ctrl)
 
 			s := NewCheckoutService(
-				cartService,
-				currencyService,
-				paymentService,
-				protuctsService,
-				shippingService,
+				cartClient,
+				currencyClient,
+				paymentClient,
+				productsClient,
+				shippingClient,
 			)
 
-			test.setupMock(shippingService)
+			test.setupMock(shippingClient)
 
 			quoteShipping := (*checkoutService).quoteShipping
 			res, err := quoteShipping(
