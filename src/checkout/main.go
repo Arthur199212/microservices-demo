@@ -19,6 +19,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -26,6 +27,11 @@ const (
 )
 
 func main() {
+	err := godotenv.Load()
+  if err != nil {
+		log.Fatal().Err(err).Msg("cannot load .env file")
+  }
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort

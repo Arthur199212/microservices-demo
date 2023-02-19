@@ -15,7 +15,7 @@ proto:
 
 .PHONY: evans
 evans:
-	evans --host localhost --port 5002 -r repl
+	evans --host localhost --port 5005 -r repl
 
 .PHONY: test
 test:
