@@ -6,6 +6,7 @@ require (
 	github.com/Arthur199212/microservices-demo v0.0.0
 	github.com/durango/go-credit-card v0.0.0-20220404131259-a9e175ba4082
 	github.com/google/uuid v1.3.0
+	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.1
 	google.golang.org/grpc v1.52.3
