@@ -81,5 +81,9 @@ func (s *checkoutService) PlaceOrder(
 		},
 		Items: orderItems,
 	}
+
+	// todo: push event to queue to handle cart cleanup,
+	// shipping, and email confirmation asynchronously
+
 	return order, nil
 }
