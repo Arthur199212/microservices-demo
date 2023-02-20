@@ -10,7 +10,7 @@ import (
 type AddItemsArgs struct {
 	ProductId int64   `json:"productId" validate:"required,min=1"`
 	Quantity  int32   `json:"quantity" validate:"required,min=1"`
-	SessionId *string `json:"sessionId,omitempty" validate:"omitempty,uuid"`
+	SessionId *string `json:"sessionId,omitempty" validate:"omitempty,uuid4"`
 }
 
 func (s *cartService) AddItem(
