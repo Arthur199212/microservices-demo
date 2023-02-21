@@ -1,6 +1,8 @@
 package shipping
 
 import (
+	"math"
+
 	"github.com/google/uuid"
 )
 
@@ -48,9 +50,11 @@ func (s *shippingService) GetQuote(address Address, products []Product) (Quote, 
 	for _, product := range products {
 		quote += float32(product.Quantity) * mockShipmentCostForOneItem
 	}
+	// formats to '%.2f'
+	formatedQuote := float32(math.Round(float64(quote)*100) / 100)
 
 	return Quote{
-		Quote:        quote,
+		Quote:        formatedQuote,
 		CurrencyCode: eurCurrencyCode,
 	}, nil
 }
