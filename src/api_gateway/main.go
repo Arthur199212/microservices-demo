@@ -9,10 +9,12 @@ import (
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
 	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
+	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	cartHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/cart/handler"
 	cartService "github.com/Arthur199212/microservices-demo/src/api_gateway/cart/service"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/checkout"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/products"
+	"github.com/Arthur199212/microservices-demo/src/api_gateway/shipping"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -41,7 +43,7 @@ func main() {
 	checkoutServiceAddr := os.Getenv("CHECKOUT_SERVICE_ADDR")
 	// currencyServiceAddr := os.Getenv("CURRENCY_SERVICE_ADDR")
 	productsServiceAddr := os.Getenv("PRODUCTS_SERVICE_ADDR")
-	// shippingServiceAddr := os.Getenv("SHIPPING_SERVICE_ADDR")
+	shippingServiceAddr := os.Getenv("SHIPPING_SERVICE_ADDR")
 
 	cartConn := mustDialGrpcClient(cartServiceAddr)
 	defer cartConn.Close()
@@ -55,8 +57,9 @@ func main() {
 	defer productsConn.Close()
 	productsClient := productsv1.NewProductsServiceClient(productsConn)
 
-	// currencyClient := dialGrpcClient(currencyServiceAddr)
-	// shippingClient := dialGrpcClient(shippingServiceAddr)
+	shippingConn := mustDialGrpcClient(shippingServiceAddr)
+	defer shippingConn.Close()
+	shippingClient := shippingv1.NewShippingServiceClient(shippingConn)
 
 	validate := validator.New()
 
@@ -80,6 +83,12 @@ func main() {
 		validate,
 	)
 	productsH.AddRoutes(app)
+
+	shippingH := shipping.NewShippingHandler(
+		shipping.NewShippingService(shippingClient),
+		validate,
+	)
+	shippingH.AddRoutes(app)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Api Gateway")

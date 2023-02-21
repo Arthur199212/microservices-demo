@@ -52,5 +52,6 @@ func (s *productsService) ListProducts(
 	if err != nil {
 		return nil, err
 	}
+	// todo: convert currency if needed
 	return resp.GetProducts(), nil
 }

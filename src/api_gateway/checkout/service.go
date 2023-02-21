@@ -5,6 +5,7 @@ import (
 
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
+	"github.com/Arthur199212/microservices-demo/src/api_gateway/models"
 )
 
 type CheckoutService interface {
@@ -23,14 +24,6 @@ func NewCheckoutService(
 	}
 }
 
-type Address struct {
-	StreetAddress string  `json:"streetAddress" validate:"required,min=5,max=64"`
-	City          string  `json:"city" validate:"required,min=2,max=64"`
-	Country       string  `json:"country" validate:"required,min=2,max=64"`
-	ZipCode       string  `json:"zipCode" validate:"required,numeric,min=4,max=10"`
-	State         *string `json:"string,omitempty" validate:"omitempty,min=2,max=64"`
-}
-
 type CardInfo struct {
 	Cvv             string `json:"cvv" validate:"required,numeric,min=3,max=4"`
 	ExpirationMonth string `json:"expirationMonth" validate:"required,numeric,min=1,max=2"`
@@ -39,11 +32,11 @@ type CardInfo struct {
 }
 
 type CheckoutServiceArgs struct {
-	Email        string   `json:"email" validate:"required,email"`
-	SessionId    string   `json:"sessionId" validate:"required,uuid4"`
-	UserCurrency string   `json:"userCurrency" validate:"required,len=3"`
-	Address      Address  `json:"address"`
-	CardInfo     CardInfo `json:"cardInfo"`
+	Email        string         `json:"email" validate:"required,email"`
+	SessionId    string         `json:"sessionId" validate:"required,uuid4"`
+	UserCurrency string         `json:"userCurrency" validate:"required,len=3"`
+	Address      models.Address `json:"address"`
+	CardInfo     CardInfo       `json:"cardInfo"`
 }
 
 func (s *checkoutService) PlaceOrder(
