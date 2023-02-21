@@ -42,15 +42,29 @@ func (h *productsHandler) getProductById(c *fiber.Ctx) error {
 	if err != nil {
 		msg := fmt.Sprintf("invalid parameter id=%s", c.Params("id"))
 		log.Error().Msg(msg)
-		return c.Status(http.StatusBadRequest).JSON(msg)
-	}
-	if err := h.validate.Var(id, "required,min=1"); err != nil {
-		msg := fmt.Sprintf("invalid parameter id=%d: %+v", id, err)
-		log.Error().Msg(msg)
-		return c.Status(http.StatusBadRequest).JSON(msg)
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"error": fmt.Sprintf("%s: %+v", msg, err),
+		})
 	}
 
-	product, err := h.service.GetProductById(c.Context(), int64(id))
+	userCurrency := c.Query("currency")
+	if userCurrency == "" {
+		userCurrency = defaultCurrency
+	}
+
+	args := GetProductByIdArgs{
+		Id:           int64(id),
+		UserCurrency: userCurrency,
+	}
+	if err := h.validate.Struct(args); err != nil {
+		msg := "invalid argument"
+		log.Error().Err(err).Msg(msg)
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"error": fmt.Sprintf("%s: %+v", msg, err),
+		})
+	}
+
+	product, err := h.service.GetProductById(c.Context(), args)
 	if err != nil {
 		if errStatus, ok := status.FromError(err); ok {
 			switch errStatus.Code() {
@@ -60,12 +74,19 @@ func (h *productsHandler) getProductById(c *fiber.Ctx) error {
 				return c.Status(http.StatusNotFound).JSON(fiber.Map{
 					"error": msg,
 				})
+			case codes.InvalidArgument:
+				log.Error().Err(err).Msg("invalid argument")
+				return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+					"error": fmt.Sprintf("invalid argument: %+v", err),
+				})
 			default:
 			}
 		}
 		msg := fmt.Sprintf("cannot get product with id=%s", c.Params("id"))
-		log.Error().Msg(msg)
-		return c.Status(http.StatusInternalServerError).JSON(msg)
+		log.Error().Err(err).Msg(msg)
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": msg,
+		})
 	}
 
 	return c.Status(http.StatusOK).JSON(product)
@@ -73,22 +94,37 @@ func (h *productsHandler) getProductById(c *fiber.Ctx) error {
 
 func (h *productsHandler) listProducts(c *fiber.Ctx) error {
 	page, pageSize := c.QueryInt("page", 1), c.QueryInt("pageSize", 10)
+	userCurrency := c.Query("currency", defaultCurrency)
 
 	args := ListProductsArgs{
-		Page:     int32(page),
-		PageSize: int32(pageSize),
+		Page:         int32(page),
+		PageSize:     int32(pageSize),
+		UserCurrency: userCurrency,
 	}
 	if err := h.validate.Struct(args); err != nil {
-		msg := fmt.Sprintf("invalid argument: %+v", err)
-		log.Error().Msg(msg)
-		return c.Status(http.StatusBadRequest).JSON(msg)
+		log.Error().Err(err).Msg("invalid argument")
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"error": fmt.Sprintf("invalid argument: %+v", err),
+		})
 	}
 
 	products, err := h.service.ListProducts(c.Context(), args)
 	if err != nil {
+		if errStatus, ok := status.FromError(err); ok {
+			switch errStatus.Code() {
+			case codes.InvalidArgument:
+				log.Error().Err(err).Msg("invalid argument")
+				return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+					"error": fmt.Sprintf("invalid argument: %+v", err),
+				})
+			default:
+			}
+		}
 		msg := "cannot retrieve a list of products"
-		log.Error().Msgf("%s: %+v", msg, err)
-		return c.Status(http.StatusInternalServerError).JSON(msg)
+		log.Error().Err(err).Msgf(msg)
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": msg,
+		})
 	}
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{

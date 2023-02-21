@@ -9,6 +9,8 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type ShippingHandler interface {
@@ -42,8 +44,9 @@ type Product struct {
 }
 
 type GetQuoteInput struct {
-	Address  models.Address `json:"address" validate:"required,dive"`
-	Products []Product      `json:"products" validate:"required,min=1,max=100,dive"`
+	Address      models.Address `json:"address" validate:"required,dive"`
+	Products     []Product      `json:"products" validate:"required,min=1,max=100,dive"`
+	UserCurrency string         `json:"userCurrency" validate:"required,len=3"`
 }
 
 func (h *shippingHandler) getQuote(c *fiber.Ctx) error {
@@ -54,24 +57,39 @@ func (h *shippingHandler) getQuote(c *fiber.Ctx) error {
 			"error": "invalid payload",
 		})
 	}
+	if input.UserCurrency == "" {
+		input.UserCurrency = defaultCurrency
+	}
 
 	if err := h.validate.Struct(input); err != nil {
-		msg := "invalid argument"
-		log.Error().Err(err).Msg(msg)
+		log.Error().Err(err).Msg("invalid argument")
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-			"error": fmt.Sprintf("%s: %+v", msg, err),
+			"error": fmt.Sprintf("invalid argument: %+v", err),
 		})
 	}
 
-	quote, err := h.service.GetQuote(c.Context(), convertToGetQuoteArgs(input))
+	money, err := h.service.GetQuote(c.Context(), convertToGetQuoteArgs(input))
 	if err != nil {
+		if errStatus, ok := status.FromError(err); ok {
+			switch errStatus.Code() {
+			case codes.InvalidArgument:
+				log.Error().Err(err).Msg("invalid argument")
+				return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+					"error": fmt.Sprintf("invalid argument: %+v", err),
+				})
+			default:
+			}
+		}
 		msg := "cannot get shipping quote"
-		log.Error().Msgf("%s: %+v", msg, err)
-		return c.Status(http.StatusInternalServerError).JSON(msg)
+		log.Error().Err(err).Msg(msg)
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": msg,
+		})
 	}
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"quote": quote,
+		"quote":    money.GetAmount(),
+		"currency": money.GetCurrencyCode(),
 	})
 }
 
@@ -97,6 +115,7 @@ func convertToGetQuoteArgs(input GetQuoteInput) GetQuoteArgs {
 			StreetAddress: input.Address.StreetAddress,
 			ZipCode:       input.Address.ZipCode,
 		},
-		Products: products,
+		Products:     products,
+		UserCurrency: input.UserCurrency,
 	}
 }
