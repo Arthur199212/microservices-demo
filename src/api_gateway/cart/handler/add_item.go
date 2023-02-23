@@ -28,7 +28,7 @@ func (h *cartHandler) addItem(c *fiber.Ctx) error {
 	if err != nil {
 		msg := fmt.Sprintf("cannot add item to cart with sessionId=%s", sessionId)
 		log.Error().Err(err).Msg(msg)
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"error": msg,
 		})
 	}
