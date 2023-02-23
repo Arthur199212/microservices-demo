@@ -88,11 +88,17 @@ func (s *productsService) ListProducts(
 		return nil, err
 	}
 
-	if args.UserCurrency == defaultCurrency {
-		return resp.GetProducts(), nil
+	products := resp.GetProducts()
+	if products == nil {
+		products = make([]*productsv1.Product, 0)
+		return products, nil
 	}
 
-	for _, product := range resp.GetProducts() {
+	if args.UserCurrency == defaultCurrency {
+		return products, nil
+	}
+
+	for _, product := range products {
 		money, err := s.currencyService.Convert(ctx, currency.ConvertArgs{
 			From: &modelsv1.Money{
 				Amount:       product.Price,
@@ -108,5 +114,5 @@ func (s *productsService) ListProducts(
 		product.Currency = money.GetCurrencyCode()
 	}
 
-	return resp.Products, nil
+	return products, nil
 }
