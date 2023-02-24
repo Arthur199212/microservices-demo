@@ -118,7 +118,7 @@ func TestChargeHandler(t *testing.T) {
 				grpcServer.Stop()
 			})
 
-			config := &utils.Config{
+			config := utils.Config{
 				AllowTestCardNumbers: true,
 				Port:                 "5000",
 			}

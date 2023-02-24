@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-service
+spec:
+  type: ClusterIP
+  selector:
+    app: cart
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-deployment
+  labels:
+    app: cart
+spec:
+  selector:
+    matchLabels:
+      app: cart
+  template:
+    metadata:
+      labels:
+        app: cart
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: cart
+          image: microservices_demo/cart
+          imagePullPolicy: Never # for local images
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'

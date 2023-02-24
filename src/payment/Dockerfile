@@ -30,7 +30,7 @@ WORKDIR /app
 
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /tmp/src/app/server .
-COPY src/payment/.env .
+COPY --from=builder /tmp/src/app/configs ./configs
 
 # Run the service on container startup.
 CMD ["./server"]

@@ -1,0 +1,47 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: microservices-demo
+build:
+  artifacts:
+    - image: microservices_demo/api-gateway
+      context: .
+      docker:
+        dockerfile: src/api_gateway/Dockerfile
+    - image: microservices_demo/cart
+      context: .
+      docker:
+        dockerfile: src/cart/Dockerfile
+    - image: microservices_demo/checkout
+      context: .
+      docker:
+        dockerfile: src/checkout/Dockerfile
+    - image: microservices_demo/currency
+      context: .
+      docker:
+        dockerfile: src/currency/Dockerfile
+    - image: microservices_demo/payment
+      context: .
+      docker:
+        dockerfile: src/payment/Dockerfile
+    - image: microservices_demo/products
+      context: .
+      docker:
+        dockerfile: src/products/Dockerfile
+    - image: microservices_demo/shipping
+      context: .
+      docker:
+        dockerfile: src/shipping/Dockerfile
+  tagPolicy:
+    gitCommit: {}
+manifests:
+  rawYaml:
+    - src/api_gateway/k8s/api_gateway.yaml
+    - src/cart/k8s/cart.yaml
+    - src/checkout/k8s/checkout.yaml
+    - src/currency/k8s/currency.yaml
+    - src/payment/k8s/payment.yaml
+    - src/products/k8s/products.yaml
+    - src/shipping/k8s/shipping.yaml
+deploy:
+  kubectl: {}

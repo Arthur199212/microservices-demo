@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout-service
+spec:
+  type: ClusterIP
+  selector:
+    app: checkout
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-deployment
+  labels:
+    app: checkout
+spec:
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: checkout
+          image: microservices_demo/checkout
+          imagePullPolicy: Never # for local images
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'
+            - name: CART_SERVICE_ADDR
+              value: 'cart-service:8080'
+            - name: CURRENCY_SERVICE_ADDR
+              value: 'currency-service:8080'
+            - name: PAYMENT_SERVICE_ADDR
+              value: 'payment-service:8080'
+            - name: PRODUCTS_SERVICE_ADDR
+              value: 'products-service:8080'
+            - name: SHIPPING_SERVICE_ADDR
+              value: 'shipping-service:8080'

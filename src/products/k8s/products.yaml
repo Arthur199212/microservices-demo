@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-service
+spec:
+  type: ClusterIP
+  selector:
+    app: products
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-deployment
+  labels:
+    app: products
+spec:
+  selector:
+    matchLabels:
+      app: products
+  template:
+    metadata:
+      labels:
+        app: products
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: products
+          image: microservices_demo/products
+          imagePullPolicy: Never # for local images
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'

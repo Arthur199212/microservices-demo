@@ -1,28 +1,22 @@
 package utils
 
-import "os"
+import "github.com/spf13/viper"
 
 type Config struct {
-	AllowTestCardNumbers bool
-	Port                 string
+	Port                 string `mapstructure:"PORT"`
+	AllowTestCardNumbers bool   `mapstructure:"ALLOW_TEST_CARD_NUMBERS"`
 }
 
-const (
-	defaultPort = "5003"
-)
+func LoadConfig(path string) (Config, error) {
+	viper.AddConfigPath(path)
+	viper.SetConfigName("app")
+	viper.AutomaticEnv()
 
-func LoadConfig() *Config {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
-	allowTestCardNumbers := false
-	if os.Getenv("ALLOW_TEST_CARD_NUMBERS") == "true" {
-		allowTestCardNumbers = true
+	config := Config{}
+	if err := viper.ReadInConfig(); err != nil {
+		return config, err
 	}
 
-	return &Config{
-		AllowTestCardNumbers: allowTestCardNumbers,
-		Port:                 port,
-	}
+	err := viper.Unmarshal(&config)
+	return config, err
 }

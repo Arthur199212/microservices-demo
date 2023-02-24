@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping-service
+spec:
+  type: ClusterIP
+  selector:
+    app: shipping
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping-deployment
+  labels:
+    app: shipping
+spec:
+  selector:
+    matchLabels:
+      app: shipping
+  template:
+    metadata:
+      labels:
+        app: shipping
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: shipping
+          image: microservices_demo/shipping
+          imagePullPolicy: Never # for local images
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'

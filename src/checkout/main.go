@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"os"
 	"time"
 
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
@@ -15,51 +14,36 @@ import (
 	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	"github.com/Arthur199212/microservices-demo/src/checkout/checkout"
 	"github.com/Arthur199212/microservices-demo/src/checkout/gapi"
+	"github.com/Arthur199212/microservices-demo/src/checkout/utils"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
-	"github.com/joho/godotenv"
-)
-
-const (
-	defaultPort = "5005"
 )
 
 func main() {
-	err := godotenv.Load()
-  if err != nil {
-		log.Fatal().Err(err).Msg("cannot load .env file")
-  }
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
+	config, err := utils.LoadConfig("configs")
+	if err != nil {
+		log.Fatal().Err(err).Msg("cannot load config file")
 	}
 
-	cartServiceAddr := os.Getenv("CART_SERVICE_ADDR")
-	currencyServiceAddr := os.Getenv("CURRENCY_SERVICE_ADDR")
-	paymentServiceAddr := os.Getenv("PAYMENT_SERVICE_ADDR")
-	productsServiceAddr := os.Getenv("PRODUCTS_SERVICE_ADDR")
-	shippingServiceAddr := os.Getenv("SHIPPING_SERVICE_ADDR")
-
-	cartConn := dialGrpcClient(cartServiceAddr)
+	cartConn := dialGrpcClient(config.CartServiceAddr)
 	defer cartConn.Close()
 	cartClient := cartv1.NewCartServiceClient(cartConn)
 
-	currencyConn := dialGrpcClient(currencyServiceAddr)
+	currencyConn := dialGrpcClient(config.CurrencyServiceAddr)
 	defer currencyConn.Close()
 	currencyClient := currencyv1.NewCurrencyServiceClient(currencyConn)
 
-	paymentConn := dialGrpcClient(paymentServiceAddr)
+	paymentConn := dialGrpcClient(config.PaymentServiceAddr)
 	defer paymentConn.Close()
 	paymentClient := paymentv1.NewPaymentServiceClient(paymentConn)
 
-	productsConn := dialGrpcClient(productsServiceAddr)
+	productsConn := dialGrpcClient(config.ProductsServiceAddr)
 	defer productsConn.Close()
 	productsClient := productsv1.NewProductsServiceClient(productsConn)
 
-	shippingConn := dialGrpcClient(shippingServiceAddr)
+	shippingConn := dialGrpcClient(config.ShippingServiceAddr)
 	defer shippingConn.Close()
 	shippingClient := shippingv1.NewShippingServiceClient(shippingConn)
 
@@ -77,7 +61,7 @@ func main() {
 	// to provide self-documentation
 	reflection.Register(grpcServer)
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", config.Port))
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create listener")
 	}

@@ -7,10 +7,10 @@ import (
 
 type Server struct {
 	paymentv1.UnimplementedPaymentServiceServer
-	config *utils.Config
+	config utils.Config
 }
 
-func NewServer(config *utils.Config) *Server {
+func NewServer(config utils.Config) *Server {
 	return &Server{
 		config: config,
 	}
