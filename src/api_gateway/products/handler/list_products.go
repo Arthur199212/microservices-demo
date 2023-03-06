@@ -11,8 +11,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+const (
+	defaultPage     = 1
+	defaultPageSize = 10
+)
+
 func (h *productsHandler) listProducts(c *fiber.Ctx) error {
-	page, pageSize := c.QueryInt("page", 1), c.QueryInt("pageSize", 10)
+	page, pageSize := c.QueryInt("page", defaultPage), c.QueryInt("pageSize", defaultPageSize)
 	userCurrency := c.Query("currency", h.config.DefaultCurrency)
 
 	args := service.ListProductsArgs{

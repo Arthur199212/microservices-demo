@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
-	shipping "github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/service"
+	service "github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/service"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -37,7 +37,7 @@ func (m *MockShippingService) EXPECT() *MockShippingServiceMockRecorder {
 }
 
 // GetQuote mocks base method.
-func (m *MockShippingService) GetQuote(arg0 context.Context, arg1 shipping.GetQuoteArgs) (*modelsv1.Money, error) {
+func (m *MockShippingService) GetQuote(arg0 context.Context, arg1 service.GetQuoteArgs) (*modelsv1.Money, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetQuote", arg0, arg1)
 	ret0, _ := ret[0].(*modelsv1.Money)

@@ -13,4 +13,5 @@ test:
 .PHONY: mockgen
 mockgen:
 	@rm -f shipping/service/mocks/*.go
+	@mockgen github.com/Arthur199212/microservices-demo/src/api_gateway/products/service ProductsService > products/service/mocks/products_service_mock.go
 	@mockgen github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/service ShippingService > shipping/service/mocks/shipping_service_mock.go

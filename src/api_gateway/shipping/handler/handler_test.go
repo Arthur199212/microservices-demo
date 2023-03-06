@@ -70,7 +70,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(input)
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/json")
 				return req
@@ -104,7 +104,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(fiber.Map{})
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/xml")
 				return req
@@ -132,7 +132,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(input)
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/json")
 				return req
@@ -159,7 +159,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(input)
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/json")
 				return req
@@ -186,7 +186,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(input)
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/json")
 				return req
@@ -231,7 +231,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(input)
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/json")
 				return req
@@ -288,7 +288,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(input)
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/json")
 				return req
@@ -341,7 +341,7 @@ func TestGetQuote(t *testing.T) {
 				body, err := json.Marshal(input)
 				require.NoError(t, err)
 
-				req, err := http.NewRequest("POST", "/shipping/quote", bytes.NewReader(body))
+				req, err := http.NewRequest(http.MethodPost, "/shipping/quote", bytes.NewReader(body))
 				require.NoError(t, err)
 				req.Header.Add("content-type", "application/json")
 				return req
