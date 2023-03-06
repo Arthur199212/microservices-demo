@@ -1,4 +1,4 @@
-package shipping
+package service
 
 import (
 	"context"
@@ -26,10 +26,6 @@ func NewShippingService(
 		currencyService: currencyService,
 	}
 }
-
-const (
-	defaultCurrency = "EUR"
-)
 
 type GetQuoteArgs struct {
 	Address      *modelsv1.Address

@@ -1,4 +1,4 @@
-package shipping
+package handler
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/models"
+	"github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/service"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog/log"
@@ -18,12 +19,12 @@ type ShippingHandler interface {
 }
 
 type shippingHandler struct {
-	service  ShippingService
+	service  service.ShippingService
 	validate *validator.Validate
 }
 
 func NewShippingHandler(
-	service ShippingService,
+	service service.ShippingService,
 	validate *validator.Validate,
 ) ShippingHandler {
 	return &shippingHandler{
@@ -56,9 +57,6 @@ func (h *shippingHandler) getQuote(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": "invalid payload",
 		})
-	}
-	if input.UserCurrency == "" {
-		input.UserCurrency = defaultCurrency
 	}
 
 	if err := h.validate.Struct(input); err != nil {
@@ -93,7 +91,7 @@ func (h *shippingHandler) getQuote(c *fiber.Ctx) error {
 	})
 }
 
-func convertToGetQuoteArgs(input GetQuoteInput) GetQuoteArgs {
+func convertToGetQuoteArgs(input GetQuoteInput) service.GetQuoteArgs {
 	state := ""
 	if input.Address.State != nil {
 		state = *input.Address.State
@@ -107,7 +105,7 @@ func convertToGetQuoteArgs(input GetQuoteInput) GetQuoteArgs {
 		}
 	}
 
-	return GetQuoteArgs{
+	return service.GetQuoteArgs{
 		Address: &modelsv1.Address{
 			City:          input.Address.City,
 			Country:       input.Address.Country,
