@@ -14,9 +14,10 @@ import (
 	cartService "github.com/Arthur199212/microservices-demo/src/api_gateway/cart/service"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/checkout"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/currency"
-	"github.com/Arthur199212/microservices-demo/src/api_gateway/products"
-	"github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/handler"
-	"github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/service"
+	productsHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/products/handler"
+	productsService "github.com/Arthur199212/microservices-demo/src/api_gateway/products/service"
+	shippingHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/handler"
+	shippingService "github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/service"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/utils"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -77,14 +78,15 @@ func main() {
 	)
 	currencyH.AddRoutes(app)
 
-	productsH := products.NewProductsHandler(
-		products.NewProductsService(productsClient, currencyService),
+	productsH := productsHandler.NewProductsHandler(
+		config,
+		productsService.NewProductsService(config, productsClient, currencyService),
 		validate,
 	)
 	productsH.AddRoutes(app)
 
-	shippingH := handler.NewShippingHandler(
-		service.NewShippingService(
+	shippingH := shippingHandler.NewShippingHandler(
+		shippingService.NewShippingService(
 			shippingClient,
 			currencyService,
 		),

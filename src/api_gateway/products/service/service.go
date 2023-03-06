@@ -1,4 +1,4 @@
-package products
+package service
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/currency"
+	"github.com/Arthur199212/microservices-demo/src/api_gateway/utils"
 )
 
 type ProductsService interface {
@@ -14,23 +15,22 @@ type ProductsService interface {
 }
 
 type productsService struct {
+	config          utils.Config
 	productsClient  productsv1.ProductsServiceClient
 	currencyService currency.CurrencyService
 }
 
 func NewProductsService(
+	config utils.Config,
 	productsClient productsv1.ProductsServiceClient,
 	currencyService currency.CurrencyService,
 ) ProductsService {
 	return &productsService{
+		config:          config,
 		productsClient:  productsClient,
 		currencyService: currencyService,
 	}
 }
-
-const (
-	defaultCurrency = "EUR"
-)
 
 type GetProductByIdArgs struct {
 	Id           int64  `json:"id" validate:"required,min=1"`
@@ -49,7 +49,7 @@ func (s *productsService) GetProductById(
 	}
 
 	product := resp.GetProduct()
-	if args.UserCurrency == defaultCurrency {
+	if args.UserCurrency == s.config.DefaultCurrency {
 		return product, nil
 	}
 
@@ -94,7 +94,7 @@ func (s *productsService) ListProducts(
 		return products, nil
 	}
 
-	if args.UserCurrency == defaultCurrency {
+	if args.UserCurrency == s.config.DefaultCurrency {
 		return products, nil
 	}
 

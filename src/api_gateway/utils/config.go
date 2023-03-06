@@ -6,6 +6,7 @@ import (
 
 type Config struct {
 	Port                string `mapstructure:"PORT"`
+	DefaultCurrency     string `mapstructure:"DEFAULT_CURRENCY"`
 	CartServiceAddr     string `mapstructure:"CART_SERVICE_ADDR"`
 	CheckoutServiceAddr string `mapstructure:"CHECKOUT_SERVICE_ADDR"`
 	CurrencyServiceAddr string `mapstructure:"CURRENCY_SERVICE_ADDR"`
