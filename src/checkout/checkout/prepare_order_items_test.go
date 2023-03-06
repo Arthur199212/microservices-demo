@@ -9,11 +9,13 @@ import (
 	checkoutv1 "github.com/Arthur199212/microservices-demo/gen/services/checkout/v1"
 	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	mock_v1 "github.com/Arthur199212/microservices-demo/src/checkout/mocks"
+	"github.com/Arthur199212/microservices-demo/src/checkout/utils"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPrepareOrderItems(t *testing.T) {
+	currency := "EUR"
 	products := []*productsv1.Product{
 		&productsv1.Product{
 			Id:          1,
@@ -21,7 +23,7 @@ func TestPrepareOrderItems(t *testing.T) {
 			Description: "desc",
 			Picture:     "url",
 			Price:       1.23,
-			Currency:    defaultCurrency,
+			Currency:    currency,
 		},
 		&productsv1.Product{
 			Id:          2,
@@ -29,7 +31,7 @@ func TestPrepareOrderItems(t *testing.T) {
 			Description: "desc",
 			Picture:     "url",
 			Price:       2.27,
-			Currency:    defaultCurrency,
+			Currency:    currency,
 		},
 	}
 
@@ -52,7 +54,7 @@ func TestPrepareOrderItems(t *testing.T) {
 					Quantity: 3,
 				},
 			},
-			userCurrency: defaultCurrency,
+			userCurrency: currency,
 			setupMock: func(pc *mock_v1.MockProductsServiceClient) {
 				c1 := pc.EXPECT().GetProduct(
 					gomock.Any(),
@@ -87,7 +89,7 @@ func TestPrepareOrderItems(t *testing.T) {
 					Quantity: 2,
 				},
 			},
-			userCurrency: defaultCurrency,
+			userCurrency: currency,
 			setupMock: func(pc *mock_v1.MockProductsServiceClient) {
 				pc.EXPECT().GetProduct(
 					gomock.Any(),
@@ -117,7 +119,11 @@ func TestPrepareOrderItems(t *testing.T) {
 			productsClient := mock_v1.NewMockProductsServiceClient(ctrl)
 			shippingClient := mock_v1.NewMockShippingServiceClient(ctrl)
 
+			config := utils.Config{
+				DefaultCurrency: currency,
+			}
 			s := NewCheckoutService(
+				config,
 				cartClient,
 				currencyClient,
 				paymentClient,

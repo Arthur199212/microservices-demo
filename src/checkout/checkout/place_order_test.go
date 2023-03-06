@@ -12,6 +12,7 @@ import (
 	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	mock_v1 "github.com/Arthur199212/microservices-demo/src/checkout/mocks"
+	"github.com/Arthur199212/microservices-demo/src/checkout/utils"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -28,7 +29,11 @@ func TestPlaceOrder(t *testing.T) {
 	productsClient := mock_v1.NewMockProductsServiceClient(ctrl)
 	shippingClient := mock_v1.NewMockShippingServiceClient(ctrl)
 
+	config := utils.Config{
+		DefaultCurrency: "EUR",
+	}
 	s := NewCheckoutService(
+		config,
 		cartClient,
 		currencyClient,
 		paymentClient,
@@ -51,7 +56,7 @@ func TestPlaceOrder(t *testing.T) {
 		},
 		Email:        "person@company.com",
 		SessionId:    "session uuid",
-		UserCurrency: defaultCurrency,
+		UserCurrency: config.DefaultCurrency,
 	}
 	products := []*productsv1.Product{
 		&productsv1.Product{
@@ -60,7 +65,7 @@ func TestPlaceOrder(t *testing.T) {
 			Description: "desc",
 			Picture:     "url",
 			Price:       1.49,
-			Currency:    defaultCurrency,
+			Currency:    config.DefaultCurrency,
 		},
 	}
 	transactionId := "transaction uuid"
@@ -108,7 +113,7 @@ func TestPlaceOrder(t *testing.T) {
 		},
 	).Times(1).Return(&shippingv1.GetQuoteResponse{
 		Quote:        0.68,
-		CurrencyCode: defaultCurrency,
+		CurrencyCode: config.DefaultCurrency,
 	}, nil)
 
 	paymentClient.EXPECT().Charge(gomock.Any(), gomock.Any()).

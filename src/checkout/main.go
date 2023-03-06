@@ -48,6 +48,7 @@ func main() {
 	shippingClient := shippingv1.NewShippingServiceClient(shippingConn)
 
 	checkoutService := checkout.NewCheckoutService(
+		config,
 		cartClient,
 		currencyClient,
 		paymentClient,

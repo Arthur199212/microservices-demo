@@ -9,6 +9,7 @@ import (
 	paymentv1 "github.com/Arthur199212/microservices-demo/gen/services/payment/v1"
 	productsv1 "github.com/Arthur199212/microservices-demo/gen/services/products/v1"
 	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
+	"github.com/Arthur199212/microservices-demo/src/checkout/utils"
 )
 
 type CheckoutService interface {
@@ -16,6 +17,7 @@ type CheckoutService interface {
 }
 
 type checkoutService struct {
+	config         utils.Config
 	cartClient     cartv1.CartServiceClient
 	currencyClient currencyv1.CurrencyServiceClient
 	paymentClient  paymentv1.PaymentServiceClient
@@ -24,6 +26,7 @@ type checkoutService struct {
 }
 
 func NewCheckoutService(
+	config utils.Config,
 	cartClient cartv1.CartServiceClient,
 	currencyClient currencyv1.CurrencyServiceClient,
 	paymentClient paymentv1.PaymentServiceClient,
@@ -31,6 +34,7 @@ func NewCheckoutService(
 	shippingClient shippingv1.ShippingServiceClient,
 ) CheckoutService {
 	return &checkoutService{
+		config:         config,
 		cartClient:     cartClient,
 		currencyClient: currencyClient,
 		paymentClient:  paymentClient,

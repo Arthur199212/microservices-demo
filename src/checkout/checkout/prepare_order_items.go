@@ -10,10 +10,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const (
-	defaultCurrency = "EUR"
-)
-
 func (s *checkoutService) prepareOrderItems(
 	ctx context.Context,
 	cartItems []*modelsv1.Product,
@@ -33,7 +29,7 @@ func (s *checkoutService) prepareOrderItems(
 
 		productPrice := &modelsv1.Money{
 			Amount:       resp.Product.Price,
-			CurrencyCode: defaultCurrency,
+			CurrencyCode: s.config.DefaultCurrency,
 		}
 		money, err := s.convertCurrency(ctx, productPrice, userCurrency)
 		if err != nil {

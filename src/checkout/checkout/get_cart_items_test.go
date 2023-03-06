@@ -8,6 +8,7 @@ import (
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
 	mock_v1 "github.com/Arthur199212/microservices-demo/src/checkout/mocks"
+	"github.com/Arthur199212/microservices-demo/src/checkout/utils"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -83,6 +84,7 @@ func TestGetCartItems(t *testing.T) {
 			shippingClient := mock_v1.NewMockShippingServiceClient(ctrl)
 
 			s := NewCheckoutService(
+				utils.Config{},
 				cartClient,
 				currencyClient,
 				paymentClient,

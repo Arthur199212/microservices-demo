@@ -51,7 +51,7 @@ func (s *checkoutService) PlaceOrder(
 	}
 
 	totalSum := &modelsv1.Money{
-		CurrencyCode: defaultCurrency,
+		CurrencyCode: s.config.DefaultCurrency,
 		Amount:       shippingCost.Amount,
 	}
 	for _, item := range orderItems {

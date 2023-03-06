@@ -8,6 +8,7 @@ import (
 	modelsv1 "github.com/Arthur199212/microservices-demo/gen/models/v1"
 	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	mock_v1 "github.com/Arthur199212/microservices-demo/src/checkout/mocks"
+	"github.com/Arthur199212/microservices-demo/src/checkout/utils"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -31,9 +32,10 @@ func TestQuoteShipping(t *testing.T) {
 			Quantity: 3,
 		},
 	}
+	currency := "EUR"
 	money := &modelsv1.Money{
 		Amount:       100.10,
-		CurrencyCode: defaultCurrency,
+		CurrencyCode: currency,
 	}
 
 	testCases := []struct {
@@ -48,7 +50,7 @@ func TestQuoteShipping(t *testing.T) {
 			name:         "OK",
 			address:      address,
 			cartItems:    products,
-			userCurrency: defaultCurrency,
+			userCurrency: currency,
 			setupMock: func(s *mock_v1.MockShippingServiceClient) {
 				s.EXPECT().GetQuote(
 					gomock.Any(),
@@ -77,7 +79,7 @@ func TestQuoteShipping(t *testing.T) {
 			name:         "cannot get shipping quote",
 			address:      address,
 			cartItems:    products,
-			userCurrency: defaultCurrency,
+			userCurrency: currency,
 			setupMock: func(s *mock_v1.MockShippingServiceClient) {
 				s.EXPECT().GetQuote(
 					gomock.Any(),
@@ -114,7 +116,11 @@ func TestQuoteShipping(t *testing.T) {
 			productsClient := mock_v1.NewMockProductsServiceClient(ctrl)
 			shippingClient := mock_v1.NewMockShippingServiceClient(ctrl)
 
+			config := utils.Config{
+				DefaultCurrency: currency,
+			}
 			s := NewCheckoutService(
+				config,
 				cartClient,
 				currencyClient,
 				paymentClient,

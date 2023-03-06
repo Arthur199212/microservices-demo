@@ -46,7 +46,7 @@ func (s *checkoutService) quoteShipping(
 
 	quote := &modelsv1.Money{
 		Amount:       resp.GetQuote(),
-		CurrencyCode: defaultCurrency,
+		CurrencyCode: s.config.DefaultCurrency,
 	}
 	money, err := s.convertCurrency(ctx, quote, userCurrency)
 	if err != nil {

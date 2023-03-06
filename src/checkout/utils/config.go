@@ -4,6 +4,7 @@ import "github.com/spf13/viper"
 
 type Config struct {
 	Port                string `mapstructure:"PORT"`
+	DefaultCurrency     string `mapstructure:"DEFAULT_CURRENCY"`
 	CartServiceAddr     string `mapstructure:"CART_SERVICE_ADDR"`
 	CurrencyServiceAddr string `mapstructure:"CURRENCY_SERVICE_ADDR"`
 	PaymentServiceAddr  string `mapstructure:"PAYMENT_SERVICE_ADDR"`
