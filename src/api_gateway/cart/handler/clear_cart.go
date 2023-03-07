@@ -12,7 +12,7 @@ import (
 
 func (h *cartHandler) clearCart(c *fiber.Ctx) error {
 	sessionId := c.Params("sessionId")
-	if err := h.validate.Var(sessionId, "required,uuid"); err != nil {
+	if err := h.validate.Var(sessionId, "required,uuid4"); err != nil {
 		msg := "invalid argument \"sessionId\""
 		log.Error().Err(err)
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
