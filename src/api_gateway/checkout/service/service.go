@@ -1,4 +1,4 @@
-package checkout
+package service
 
 import (
 	"context"
@@ -43,13 +43,17 @@ func (s *checkoutService) PlaceOrder(
 	ctx context.Context,
 	args CheckoutServiceArgs,
 ) (*checkoutv1.Order, error) {
+	state := ""
+	if args.Address.State != nil {
+		state = *args.Address.State
+	}
 	resp, err := s.checkoutClient.PlaceOrder(ctx, &checkoutv1.PlaceOrderRequest{
 		SessionId:    args.SessionId,
 		UserCurrency: args.UserCurrency,
 		Address: &modelsv1.Address{
 			City:          args.Address.City,
 			Country:       args.Address.Country,
-			State:         args.SessionId,
+			State:         state,
 			StreetAddress: args.Address.StreetAddress,
 			ZipCode:       args.Address.ZipCode,
 		},

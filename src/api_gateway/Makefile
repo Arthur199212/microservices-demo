@@ -14,5 +14,6 @@ test:
 mockgen:
 	@rm -f shipping/service/mocks/*.go
 	@mockgen github.com/Arthur199212/microservices-demo/src/api_gateway/cart/service CartService > cart/service/mocks/cart_service_mock.go
+	@mockgen github.com/Arthur199212/microservices-demo/src/api_gateway/checkout/service CheckoutService > checkout/service/mocks/checkout_service_mock.go
 	@mockgen github.com/Arthur199212/microservices-demo/src/api_gateway/products/service ProductsService > products/service/mocks/products_service_mock.go
 	@mockgen github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/service ShippingService > shipping/service/mocks/shipping_service_mock.go

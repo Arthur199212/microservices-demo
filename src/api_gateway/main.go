@@ -12,7 +12,8 @@ import (
 	shippingv1 "github.com/Arthur199212/microservices-demo/gen/services/shipping/v1"
 	cartHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/cart/handler"
 	cartService "github.com/Arthur199212/microservices-demo/src/api_gateway/cart/service"
-	"github.com/Arthur199212/microservices-demo/src/api_gateway/checkout"
+	checkoutHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/checkout/handler"
+	checkoutService "github.com/Arthur199212/microservices-demo/src/api_gateway/checkout/service"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/currency"
 	productsHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/products/handler"
 	productsService "github.com/Arthur199212/microservices-demo/src/api_gateway/products/service"
@@ -66,8 +67,8 @@ func main() {
 	)
 	cartH.AddRoutes(app)
 
-	checkoutH := checkout.NewCheckoutHandler(
-		checkout.NewCheckoutService(checkoutClient),
+	checkoutH := checkoutHandler.NewCheckoutHandler(
+		checkoutService.NewCheckoutService(checkoutClient),
 		validate,
 	)
 	checkoutH.AddRoutes(app)
