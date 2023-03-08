@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
@@ -99,7 +102,21 @@ func main() {
 		return c.SendString("Api Gateway")
 	})
 
-	app.Listen(fmt.Sprintf(":%s", config.Port))
+	go func() {
+		if err := app.Listen(fmt.Sprintf(":%s", config.Port)); err != nil {
+			log.Fatal().Err(err).
+				Msg("error while trying to listen to port for the incoming requests")
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Info().Msg("server is shutting down ...")
+
+	if err := app.ShutdownWithTimeout(10 * time.Second); err != nil {
+		log.Fatal().Err(err).Msg("error while shutting down")
+	}
 }
 
 func mustDialGrpcClient(addr string) *grpc.ClientConn {
