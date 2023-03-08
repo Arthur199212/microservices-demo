@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	cartv1 "github.com/Arthur199212/microservices-demo/gen/services/cart/v1"
@@ -67,11 +70,20 @@ func main() {
 		log.Fatal().Err(err).Msg("cannot create listener")
 	}
 
-	log.Info().Msgf("starting gRPC server at %s", listener.Addr().String())
-	err = grpcServer.Serve(listener)
-	if err != nil {
-		log.Fatal().Err(err).Msg("cannot start gRPC server")
-	}
+	go func() {
+		log.Info().Msgf("starting gRPC server at %s", listener.Addr().String())
+		err = grpcServer.Serve(listener)
+		if err != nil {
+			log.Fatal().Err(err).Msg("cannot start gRPC server")
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Info().Msg("server is shutting down ...")
+
+	grpcServer.GracefulStop()
 }
 
 func dialGrpcClient(addr string) *grpc.ClientConn {
