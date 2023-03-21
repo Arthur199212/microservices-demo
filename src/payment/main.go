@@ -12,6 +12,7 @@ import (
 	"github.com/Arthur199212/microservices-demo/src/payment/utils"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -24,6 +25,7 @@ func main() {
 	srv := gapi.NewServer(config)
 	grpcServer := grpc.NewServer()
 	paymentv1.RegisterPaymentServiceServer(grpcServer, srv)
+	grpc_health_v1.RegisterHealthServer(grpcServer, srv)
 
 	reflection.Register(grpcServer)
 

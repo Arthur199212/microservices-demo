@@ -38,3 +38,11 @@ spec:
               value: '8080'
             - name: ALLOW_TEST_CARD_NUMBERS
               value: 'true'
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 8080
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 8080
