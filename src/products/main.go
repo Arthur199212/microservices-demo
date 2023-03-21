@@ -12,6 +12,7 @@ import (
 	"github.com/Arthur199212/microservices-demo/src/products/gapi"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -29,6 +30,7 @@ func main() {
 	srv := gapi.NewServer(pdb)
 	grpcServer := grpc.NewServer()
 	productsv1.RegisterProductsServiceServer(grpcServer, srv)
+	grpc_health_v1.RegisterHealthServer(grpcServer, srv)
 
 	// to provide self-documentation
 	reflection.Register(grpcServer)
