@@ -18,6 +18,7 @@ import (
 	checkoutHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/checkout/handler"
 	checkoutService "github.com/Arthur199212/microservices-demo/src/api_gateway/checkout/service"
 	"github.com/Arthur199212/microservices-demo/src/api_gateway/currency"
+	"github.com/Arthur199212/microservices-demo/src/api_gateway/health"
 	productsHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/products/handler"
 	productsService "github.com/Arthur199212/microservices-demo/src/api_gateway/products/service"
 	shippingHandler "github.com/Arthur199212/microservices-demo/src/api_gateway/shipping/handler"
@@ -97,6 +98,9 @@ func main() {
 		validate,
 	)
 	shippingH.AddRoutes(app)
+
+	healthH := health.NewHealthHandler()
+	healthH.AddRoutes(app)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Api Gateway")
