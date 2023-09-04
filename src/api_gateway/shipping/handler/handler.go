@@ -45,8 +45,8 @@ type Product struct {
 }
 
 type GetQuoteInput struct {
-	Address      models.Address `json:"address" validate:"required,dive"`
-	Products     []Product      `json:"products" validate:"required,min=1,max=100,dive"`
+	Address      models.Address `json:"address" validate:"required"`
+	Products     []Product      `json:"products" validate:"required,min=1,max=100"`
 	UserCurrency string         `json:"userCurrency" validate:"required,len=3"`
 }
 
