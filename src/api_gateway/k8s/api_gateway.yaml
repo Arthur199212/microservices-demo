@@ -45,6 +45,7 @@ spec:
             - name: PRODUCTS_SERVICE_ADDR
               value: 'products-service:8080'
             - name: SHIPPING_SERVICE_ADDR
+              value: 'shipping-service:8080'
           readinessProbe:
             periodSeconds: 5
             httpGet:
