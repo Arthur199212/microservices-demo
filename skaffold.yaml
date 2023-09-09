@@ -34,6 +34,8 @@ build:
         dockerfile: src/shipping/Dockerfile
   tagPolicy:
     gitCommit: {}
+  local:
+    push: false
 manifests:
   rawYaml:
     - src/api_gateway/k8s/api_gateway.yaml

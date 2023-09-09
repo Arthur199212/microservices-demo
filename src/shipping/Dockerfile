@@ -14,7 +14,7 @@ COPY gen /tmp/gen
 # Retrieve application dependencies.
 # This allows the container build to reuse cached dependencies.
 # Expecting to copy go.mod and go.sum.
-COPY src/shipping/go.* /tmp/src/app
+COPY src/shipping/go.* /tmp/src/app/
 RUN go mod download
 
 # Copy local code to the container image.
