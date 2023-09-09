@@ -1,5 +1,7 @@
 # Microservices Demo Application
 
+[![CI](https://github.com/Arthur199212/microservices-demo/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Arthur199212/microservices-demo/actions/workflows/ci.yml)
+
 | Service                           | Description                                                                                                                                 |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | [api-gateway](./src/api_gateway/) | Used as an entry point for clients to communicate with the rest of the application. It's built as RESP API and uses JSON for communication. |
