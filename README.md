@@ -21,8 +21,8 @@
 
 ### Local Cluster
 
-1. Launch a local k8s cluster `minikube start` or `kind create cluster`.
-1. Verify the cluster is operating and it's possible to connect to control plane `kubectl get nodes`.
+1. Launch a local k8s cluster `minikube start --cpus='2' --memory='3.9g'` or `kind create cluster`.
+1. Verify the cluster is operating `minikube status` and it's possible to connect to control plane `kubectl get nodes`.
 1. Run `skaffold run` or `skaffold dev`. This will build and deploy the application. If `skaffold dev` is used it will rebuild the images automatically as you change the code.
 1. Run `kubectl get pods` to verify that the Pods are operating well.
 1. Run `kubectl port-forward svc/api-gateway-service 8080:8080` to forward a port to the api-gateway service.
@@ -31,4 +31,4 @@
 ### Cleanup
 
 1. Use `skaffold delete` if you used `skaffold run` or just stop `skaffold dev` by pressing `ctrl+c`.
-1. Run `minikube stop` to stop Minikube cluster.
+1. Run `minikube stop` to stop Minikube cluster or `minikube delete` to delete it.
