@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine AS builder
+FROM golang:1.21-alpine3.18 AS builder
 
 RUN apk add --no-cache git
 
@@ -23,7 +23,7 @@ COPY src/payment/ .
 RUN go build -o server .
 
 # Start fresh from a smaller image.
-FROM alpine:3.17.2 
+FROM alpine:3.18
 RUN apk add ca-certificates
 
 WORKDIR /app
