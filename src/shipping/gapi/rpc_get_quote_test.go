@@ -13,6 +13,7 @@ import (
 	mock_shipping "github.com/Arthur199212/microservices-demo/src/shipping/shipping/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"go.opentelemetry.io/otel"
 	"google.golang.org/grpc"
 
 	"google.golang.org/grpc/codes"
@@ -245,7 +246,8 @@ func TestGetQuote(t *testing.T) {
 			})
 
 			shippingService := mock_shipping.NewMockShippingService(ctrl)
-			srv := NewServer(shippingService)
+			tracer := otel.Tracer("shipping_test")
+			srv := NewServer(tracer, shippingService)
 			grpcSrv := grpc.NewServer()
 			t.Cleanup(func() {
 				grpcSrv.Stop()
